@@ -34,6 +34,17 @@ class Project{
     status = statusIn;
 
     //initialize contentList with the content needed based on the project type (Album, EP, Single, Other)
+    switch (type){
+      case "Album":
+
+      case "EP":
+
+      case "Single":
+
+      case "Other":
+
+      default:
+    }
   }
 
   String getTitle(){
