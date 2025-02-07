@@ -1,9 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:mini_manager/calendar_page.dart';
 
+//used for swiping between pages
+import 'package:go_router/go_router.dart';
+import 'package:swipeable_page_route/swipeable_page_route.dart';
+import 'go_router.dart';
 
-void main() {
+//connecting to other pages
+import 'calendar_page.dart';
+import 'shop_page.dart';
+import 'projects_page.dart';
+import 'settings_stats_page.dart';
+
+void main() { //Main method. starts the app globally, don't need for every page.
   runApp(const MyApp());
-  String hi = "";
+}
+
+enum NavigationMode{
+  navigator,
+  goRouter,
+  goRouterBuilder;
+
+  static const current = NavigationMode.navigator; //change this to switch between navigation modes
 }
 
 class MyApp extends StatelessWidget {
@@ -12,30 +30,33 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Mini-Manager',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    const title = ('MiniMana');
+    final theme = ThemeData(
+      colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      useMaterial3: true,
     );
+
+    //Navigation goRouter code for page swiping
+    return switch (NavigationMode.current){
+      NavigationMode.navigator => MaterialApp(
+        title: title,
+        theme: theme,
+        home: const CalendarPage(title: 'Calendar')
+      ),
+      NavigationMode.goRouter => MaterialApp.router(
+        title: title,
+        theme: theme,
+        routerConfig: goRouter,
+      ),
+      NavigationMode.goRouterBuilder => MaterialApp.router(
+        title: title,
+        theme: theme,
+        routerConfig: goRouterBuilder,
+      )
+    };
   }
+
+
 }
 
 class MyHomePage extends StatefulWidget {
