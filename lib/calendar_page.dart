@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mini_manager/projects_page.dart';
 import 'package:mini_manager/shop_page.dart';
+import 'package:mini_manager/main.dart';
+import 'package:mini_manager/data_manager.dart';
+
 
 //used for swiping between pages
 import 'package:go_router/go_router.dart';
@@ -26,11 +29,18 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPage extends State<CalendarPage> {
   int _counter = 0;
+  DataManager data = DataManager();
+
+  void _save() {
+    data.saveProjects();
+  }
 
   void _incrementCounter() {
     setState(() {
       _counter++;
     });
+
+
 
     /*
     Navigator.push(
@@ -91,8 +101,8 @@ class _CalendarPage extends State<CalendarPage> {
       ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: _save, //make sure you call it without (). wont work otherwise.
+        tooltip: 'Save Projects',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );

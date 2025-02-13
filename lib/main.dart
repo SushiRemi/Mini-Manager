@@ -1,7 +1,14 @@
+//connecting to other pages
 import 'package:flutter/material.dart';
 import 'package:mini_manager/calendar_page.dart';
 import 'package:mini_manager/project.dart';
 import 'package:mini_manager/shopitem.dart';
+import 'data_manager.dart';
+
+//imports for saving/loading files
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'dart:async';
 
 
 //used for swiping between pages
@@ -9,62 +16,13 @@ import 'package:go_router/go_router.dart';
 import 'package:swipeable_page_route/swipeable_page_route.dart';
 import 'go_router.dart';
 
-//connecting to other pages
-import 'calendar_page.dart';
-import 'shop_page.dart';
-import 'projects_page.dart';
-import 'settings_stats_page.dart';
 
-//Lists of projects, items, and other stats tracked throughout program life
-var projectList = <Project>[];
-var shopList = <ShopItem>[];
-var stats = <int>[]; //includes coin amount
 
-//saves the current project, item, and stats to the save file.
-void saveAll(){
-  saveProjects();
-  saveShop();
-  saveStats();
-}
 
-//loads a project list, item list, and stats from a save file
-void loadAll(){
-  loadProjects();
-  loadShop();
-  loadStats();
-}
 
-//saves the current projectList to a file
-void saveProjects(){
+void main() {
+  //Main method. starts the app globally, don't need for every page.
 
-}
-
-//loads a projectList from a file
-void loadProjects(){
-
-}
-
-//saves the current shopList to a file
-void saveShop(){
-
-}
-
-//loads a shopList from a file
-void loadShop(){
-
-}
-
-//saves the current stats to a file
-void saveStats(){
-
-}
-
-//loads stats from a file
-void loadStats(){
-
-}
-
-void main() { //Main method. starts the app globally, don't need for every page.
   runApp(const MyApp());
 }
 
