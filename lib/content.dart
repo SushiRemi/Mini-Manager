@@ -1,30 +1,27 @@
 class Content{
   String title = "";
-  int parentProjectID = -1;
   String type = "";
   String description = "";
-  String date = "";
+  //String date = "";
+  DateTime date = DateTime(0,0,0);
   String status = "";
-  List<String> tags = [];
+  //List<String> tags = [];
 
   Content.empty(){
     title = "";
-    parentProjectID = -1;
     type = "";
     description = "";
-    date = "";
+    date = DateTime(0,0,0);
     status = "";
-    tags = [];
+    //tags = [];
   }
 
-  Content.create(String titleIn, int projectIDIn, String typeIn, String descriptionIn, String dateIn, String statusIn){
+  Content.create(String titleIn, String typeIn, String descriptionIn, DateTime dateIn, String statusIn){
     title = titleIn;
-    parentProjectID = projectIDIn;
     type = typeIn;
     description = descriptionIn;
     date = dateIn;
     status = statusIn;
-
   }
 
   String getTitle(){
@@ -33,14 +30,6 @@ class Content{
 
   void setTitle(String newTitle){
     title = newTitle;
-  }
-
-  int getParentProjectID(){
-    return parentProjectID;
-  }
-
-  void setProjectID(int newID){
-    parentProjectID = newID;
   }
 
   String getType(){
@@ -59,11 +48,11 @@ class Content{
     description = newDescription;
   }
 
-  String getDate(){
+  DateTime getDate(){
     return date;
   }
 
-  void setDate(String newDate){
+  void setDate(DateTime newDate){
     date = newDate;
   }
 
@@ -75,6 +64,7 @@ class Content{
     status = newStatus;
   }
 
+  /*
   List<String> getTags(){
     return tags;
   }
@@ -87,6 +77,19 @@ class Content{
   void removeTag(int index){
     //check if exists
     tags.removeAt(index);
+  }
+  */
+
+
+  String toCSV(){
+    String out = "";
+    out += "\"content\",";
+    out += "\"$title\",";
+    out += "\"$type\",";
+    out += "\"$description\",";
+    out += (date.toString().substring(0, 10));
+    out += ",\"$status\"";
+    return out;
   }
 }
 

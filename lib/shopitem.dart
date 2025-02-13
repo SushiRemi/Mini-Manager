@@ -42,4 +42,13 @@ class ShopItem{
   void setIcon(String newIcon){
     icon = newIcon;
   }
+
+  String toCSV(){
+    String out = "";
+    out += ("\"$name\",");
+    out += ("$cost,");
+    out += ("\"$description\",");
+    out += ("\"$icon\"");
+    return out;
+  }
 }

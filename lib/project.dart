@@ -2,31 +2,28 @@ import 'content.dart';
 
 class Project{
   String title = "";
-  int projectID = -1;
   String type = "";
   String description = "";
-  String startDate = "";
-  String endDate = "";
+  DateTime startDate = DateTime(0,0,0);
+  DateTime endDate = DateTime(0,0,0);
   String status = "";
   List<Content> contentList = [];
-  List<String> tags = [];
+  //List<String> tags = [];
 
 
   Project.empty(){
     title = "";
-    projectID = -1;
     type = "";
     description = "";
-    startDate = "";
-    endDate = "";
+    startDate = DateTime(0,0,0);
+    endDate = DateTime(0,0,0);
     status = "";
     contentList = [];
-    tags = [];
+    //tags = [];
   }
 
-  Project.create(String titleIn, int projectIDIn, String typeIn, String descriptionIn, String startDateIn, String endDateIn, String statusIn){
+  Project.create(String titleIn, String typeIn, String descriptionIn, DateTime startDateIn, DateTime endDateIn, String statusIn){
     title = titleIn;
-    projectID = projectIDIn;
     type = typeIn;
     description = descriptionIn;
     startDate = startDateIn;
@@ -55,14 +52,6 @@ class Project{
     title = newTitle;
   }
 
-  int getProjectID(){
-    return projectID;
-  }
-
-  void setProjectID(int newID){
-    projectID = newID;
-  }
-
   String getType(){
     return type;
   }
@@ -79,19 +68,19 @@ class Project{
     description = newDescription;
   }
 
-  String getStartDate(){
+  DateTime getStartDate(){
     return startDate;
   }
 
-  void setStartDate(String newStartDate){
+  void setStartDate(DateTime newStartDate){
     startDate = newStartDate;
   }
 
-  String getEndDate(){
+  DateTime getEndDate(){
     return endDate;
   }
 
-  void setEndDate(String newEndDate){
+  void setEndDate(DateTime newEndDate){
     endDate = newEndDate;
   }
 
@@ -117,5 +106,32 @@ class Project{
     contentList.removeAt(index);
   }
 
+  String toCSV(){
+    String out = "";
+    out += "\"project\",";
+    out += "\"$title\",";
+    out += "\"$type\",";
+    out += "\"$description\",";
+    out += (startDate.toString().substring(0, 10));
+    out += ",";
+    out += (endDate.toString().substring(0, 10));
+    out += ",";
+    out += "\"$endDate\",";
+    out += "\"$status\"";
+    return out; //contentList csv is handled by the content toCSV() function
+  }
+
+  void sortContentByDate(){ //untested insertion sort, will need version for sorting projects.
+    for (int i = 1; i < contentList.length; i++) {
+      int j = i;
+
+      while (j > 0 && contentList[j].getDate().isBefore(contentList[j-1].getDate())) {
+        Content aux = contentList[j];
+        contentList[j] = contentList[j - 1];
+        contentList[j - 1] = aux;
+        j--;
+      }
+    }
+  }
 }
 

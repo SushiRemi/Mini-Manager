@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mini_manager/calendar_page.dart';
+import 'package:mini_manager/project.dart';
+import 'package:mini_manager/shopitem.dart';
+
 
 //used for swiping between pages
 import 'package:go_router/go_router.dart';
@@ -11,6 +14,55 @@ import 'calendar_page.dart';
 import 'shop_page.dart';
 import 'projects_page.dart';
 import 'settings_stats_page.dart';
+
+//Lists of projects, items, and other stats tracked throughout program life
+var projectList = <Project>[];
+var shopList = <ShopItem>[];
+var stats = <int>[]; //includes coin amount
+
+//saves the current project, item, and stats to the save file.
+void saveAll(){
+  saveProjects();
+  saveShop();
+  saveStats();
+}
+
+//loads a project list, item list, and stats from a save file
+void loadAll(){
+  loadProjects();
+  loadShop();
+  loadStats();
+}
+
+//saves the current projectList to a file
+void saveProjects(){
+
+}
+
+//loads a projectList from a file
+void loadProjects(){
+
+}
+
+//saves the current shopList to a file
+void saveShop(){
+
+}
+
+//loads a shopList from a file
+void loadShop(){
+
+}
+
+//saves the current stats to a file
+void saveStats(){
+
+}
+
+//loads stats from a file
+void loadStats(){
+
+}
 
 void main() { //Main method. starts the app globally, don't need for every page.
   runApp(const MyApp());
@@ -59,8 +111,8 @@ class MyApp extends StatelessWidget {
 
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class SplashPage extends StatefulWidget {
+  const SplashPage({super.key, required this.title});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -74,10 +126,10 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<SplashPage> createState() => _SplashPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _SplashPageState extends State<SplashPage> {
   int _counter = 0;
 
   void _incrementCounter() {
