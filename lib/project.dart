@@ -108,15 +108,14 @@ class Project{
 
   String toCSV(){
     String out = "";
-    out += "\"project\",";
-    out += "\"$title\",";
-    out += "\"$type\",";
-    out += "\"$description\",";
+    out += "\"project\",,";
+    out += "\"$title\",,";
+    out += "\"$type\",,";
+    out += "\"$description\",,";
     out += (startDate.toString().substring(0, 10));
-    out += ",";
+    out += ",,";
     out += (endDate.toString().substring(0, 10));
-    out += ",";
-    out += "\"$endDate\",";
+    out += ",,";
     out += "\"$status\"";
     return out; //contentList csv is handled by the content toCSV() function
   }

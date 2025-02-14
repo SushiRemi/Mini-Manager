@@ -83,12 +83,12 @@ class Content{
 
   String toCSV(){
     String out = "";
-    out += "\"content\",";
-    out += "\"$title\",";
-    out += "\"$type\",";
-    out += "\"$description\",";
+    out += "\"content\",,";
+    out += "\"$title\",,";
+    out += "\"$type\",,";
+    out += "\"$description\",,";
     out += (date.toString().substring(0, 10));
-    out += ",\"$status\"";
+    out += ",,\"$status\"";
     return out;
   }
 }

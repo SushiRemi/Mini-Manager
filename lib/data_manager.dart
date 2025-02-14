@@ -1,6 +1,7 @@
 //connecting to other pages
 import 'package:mini_manager/project.dart';
 import 'package:mini_manager/shopitem.dart';
+import 'package:mini_manager/content.dart';
 
 //imports for saving/loading files
 import 'package:path_provider/path_provider.dart';
@@ -67,29 +68,86 @@ class DataManager {
         file.writeAsStringSync("${projectList[i].toCSV()}\n", mode: FileMode.append); //appends to current
       }
     }
-    file.writeAsStringSync("hello");
-    file.writeAsStringSync(" universe!", mode: FileMode.append);
+    //file.writeAsStringSync("hello");
+    //file.writeAsStringSync(" universe!", mode: FileMode.append);
     return file;
   }
 
 //loads a projectList from a file
-  void loadProjects(){
+  Future<int> loadProjects() async {
+    try {
+      final file = await _projectsFile;
 
+      // Read the file
+      final contents = await file.readAsLines();
+
+      //Create temp projectList
+      var tempList = <Project>[];
+
+      // Create Projects/Content for each
+      for (int i=0; i<contents.length; i++){
+        var current = contents[i].split(',,');
+        if(current[0].contains("project")){
+          DateTime tempStart = DateTime(int.parse(current[4].substring(0,4)), int.parse(current[4].substring(5,7)), int.parse(current[4].substring(8,10)));
+          DateTime tempEnd = DateTime(int.parse(current[5].substring(0,4)), int.parse(current[5].substring(5,7)), int.parse(current[5].substring(8,10)));
+          tempList.add(Project.create(current[1], current[2], current[3], tempStart, tempEnd, current[6]));
+        } else if (current[0].contains("content")){
+          //add content to latest project
+          DateTime tempDate = DateTime(int.parse(current[4].substring(0,4)), int.parse(current[4].substring(5,7)), int.parse(current[4].substring(8,10)));
+          Content newContent = Content.create(current[1], current[2], current[3], tempDate, current[5]);
+          tempList[tempList.length-1].addContent(newContent);
+        }
+      }
+      projectList = tempList;
+      return 0;
+    } catch (e) {
+      // If encountering an error, return 1
+      return 1;
+    }
   }
 
 //saves the current shopList to a file
-  void saveShop(){
-
+  Future<File> saveShop() async{
+    final file = await _itemsFile;
+    for (int i=0; i < shopList.length; i++){
+      if (i==0) {
+        file.writeAsStringSync("${shopList[i].toCSV()}\n"); //erases all old data and starts fresh
+      } else {
+        file.writeAsStringSync("${shopList[i].toCSV()}\n", mode: FileMode.append); //appends to current
+      }
+    }
+    return file;
   }
 
 //loads a shopList from a file
-  void loadShop(){
+  Future<int> loadShop() async {
+    try {
+      final file = await _itemsFile;
 
+      // Read the file
+      final contents = await file.readAsLines();
+
+      //Create temp projectList
+      var tempList = <ShopItem>[];
+
+      // Create Projects/Content for each
+      for (int i=0; i<contents.length; i++){
+        var current = contents[i].split(',,');
+        tempList.add(ShopItem(current[0], int.parse(current[1]), current[2], current[3]));
+      }
+      shopList = tempList;
+      return 0;
+    } catch (e) {
+      // If encountering an error, return 1
+      return 1;
+    }
   }
 
 //saves the current stats to a file
-  void saveStats(){
+  Future<File> saveStats() async{
+    final file = await _statsFile;
 
+    return file;
   }
 
 //loads stats from a file

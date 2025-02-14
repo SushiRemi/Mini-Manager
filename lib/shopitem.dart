@@ -45,9 +45,9 @@ class ShopItem{
 
   String toCSV(){
     String out = "";
-    out += ("\"$name\",");
-    out += ("$cost,");
-    out += ("\"$description\",");
+    out += ("\"$name\",,");
+    out += ("$cost,,");
+    out += ("\"$description\",,");
     out += ("\"$icon\"");
     return out;
   }
