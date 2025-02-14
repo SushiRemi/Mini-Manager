@@ -2,6 +2,7 @@
 import 'package:mini_manager/project.dart';
 import 'package:mini_manager/shopitem.dart';
 import 'package:mini_manager/content.dart';
+import 'package:mini_manager/stats.dart';
 
 //imports for saving/loading files
 import 'package:path_provider/path_provider.dart';
@@ -15,7 +16,7 @@ class DataManager {
   //Lists of projects, items, and other stats tracked throughout program life
   var projectList = <Project>[];
   var shopList = <ShopItem>[];
-  var stats = <int>[]; //includes coin amount
+  var stats = Stats(0,0,0,0,0,0,0,0,0,0,0,0); //includes coin amount
 
 
   //_localPath is where we store files on the devices.
@@ -146,12 +147,24 @@ class DataManager {
 //saves the current stats to a file
   Future<File> saveStats() async{
     final file = await _statsFile;
-
+    file.writeAsStringSync(stats.toCSV());
     return file;
   }
 
 //loads stats from a file
-  void loadStats(){
+  Future<int> loadStats() async {
+    try {
+      final file = await _statsFile;
 
+      // Read the file
+      final contents = await file.readAsString();
+      var statList = contents.split(',');
+      Stats tempStats = Stats(int.parse(statList[0]), int.parse(statList[1]), int.parse(statList[2]), int.parse(statList[3]), int.parse(statList[4]), int.parse(statList[5]), int.parse(statList[6]), int.parse(statList[7]), int.parse(statList[8]), int.parse(statList[9]), int.parse(statList[10]), int.parse(statList[11]));
+      stats = tempStats;
+      return 0;
+    } catch (e) {
+      // If encountering an error, return 1
+      return 1;
+    }
   }
 }
