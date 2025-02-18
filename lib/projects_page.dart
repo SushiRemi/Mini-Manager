@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mini_manager/calendar_page.dart';
 import 'package:mini_manager/projects_page.dart';
 import 'package:mini_manager/shop_page.dart';
 
@@ -37,20 +38,22 @@ class _ProjectsPage extends State<ProjectsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
       body: Center(
 
-        //Swipe left to go to shop
+        //Swipe left to go to shop, right to go to calendar
           child: GestureDetector(
               onPanUpdate: (details) {
                 //swiping in left direction
-                if (details.delta.dx < 0){
+                if (details.delta.dx < 0) {
                   _pushShopPage(context);
                 }
               }
           )
+
       ),
 
       floatingActionButton: FloatingActionButton(
@@ -68,6 +71,16 @@ class _ProjectsPage extends State<ProjectsPage> {
           .push<void>(SwipeablePageRoute(builder: (_) => const ShopPage(title: "Shop"))),
       NavigationMode.goRouter => GoRouter.of(context).push<void>('/shop'),
       NavigationMode.goRouterBuilder => ShopPageRoute().push(context),
+    };
+  }
+
+  //Method to go to calendar
+  Future<void> _pushCalendarPage(BuildContext context) async {
+    return switch (NavigationMode.current){
+      NavigationMode.navigator => Navigator.of(context)
+          .push<void>(SwipeablePageRoute(builder: (_) => const CalendarPage(title: "Calendar"))),
+      NavigationMode.goRouter => GoRouter.of(context).push<void>('/calendar'),
+      NavigationMode.goRouterBuilder => CalendarPageRoute().push(context),
     };
   }
 }

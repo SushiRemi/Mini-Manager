@@ -38,8 +38,10 @@ class _ShopPage extends State<ShopPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: null,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: const Text("Coin Shop"),
       ),
       body: Center(
 
@@ -62,7 +64,7 @@ class _ShopPage extends State<ShopPage> {
     );
   }
 
-  //Method to go to shop
+  //Method to go to settings
   Future<void> _pushSettingsStatsPage(BuildContext context) async {
     return switch (NavigationMode.current){
       NavigationMode.navigator => Navigator.of(context)

@@ -28,36 +28,18 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPage extends State<CalendarPage> {
-  int _counter = 0;
   DataManager data = DataManager();
 
   void _save() {
     data.saveProjects();
   }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-
-
-
-    /*
-    Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const ShopPage(title: 'Shop Page',))
-    );
-    */
-    Navigator.push(
-        context,
-        SwipeablePageRoute(builder: (context) => const ProjectsPage(title: 'Projects',))
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: null,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
