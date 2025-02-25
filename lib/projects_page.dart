@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mini_manager/calendar_page.dart';
 import 'package:mini_manager/projects_page.dart';
 import 'package:mini_manager/shop_page.dart';
+import 'package:mini_manager/settings_stats_page.dart';
 
 //used for swiping between pages
 import 'package:go_router/go_router.dart';
@@ -44,23 +45,145 @@ class _ProjectsPage extends State<ProjectsPage> {
       ),
       body: Center(
 
-        //Swipe left to go to shop, right to go to calendar
-          child: GestureDetector(
-              onPanUpdate: (details) {
-                //swiping in left direction
-                if (details.delta.dx < 0) {
-                  _pushShopPage(context);
-                }
-              }
-          )
+        // //Swipe left to go to shop, right to go to calendar
+        //   child: GestureDetector(
+        //       onPanUpdate: (details) {
+        //         //swiping in left direction
+        //         if (details.delta.dx < 0) {
+        //           _pushShopPage(context);
+        //         }
+        //       }
+        //   )
+
+        child: Column(
+          children: [
+            //Project List
+            Expanded(
+              flex: 7,
+                child: ListView(
+                  children: [
+                    Container(
+                      height: 100,
+                      color: Colors.purple
+                    ),
+                    Container(
+                      height: 100,
+                      color: Colors.red
+                    ),
+                    Container(
+                        height: 100,
+                        color: Colors.purple
+                    ),
+                    Container(
+                        height: 100,
+                        color: Colors.red
+                    ),
+                    Container(
+                        height: 100,
+                        color: Colors.purple
+                    ),
+                    Container(
+                        height: 100,
+                        color: Colors.red
+                    ),
+                    Container(
+                        height: 100,
+                        color: Colors.purple
+                    ),
+                    Container(
+                        height: 100,
+                        color: Colors.red
+                    ),
+                    Container(
+                        height: 100,
+                        color: Colors.purple
+                    ),
+                    Container(
+                        height: 100,
+                        color: Colors.red
+                    ),
+
+                  ],
+                )
+            ),
+
+            //Bottom Nav Bar
+            Expanded(
+              flex: 1,
+              child: BottomAppBar(
+                color: Colors.green,
+                shape: const CircularNotchedRectangle(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    //Calendar Page
+                    IconButton(
+                      onPressed: (){
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (context) => CalendarPage(title: "Calendar")),
+                            ModalRoute.withName("Calendar")
+                        );
+                      },
+                      icon: const Icon(
+                          Icons.calendar_month,
+                          color: Colors.yellow,
+                          size: 75,
+                          semanticLabel: 'Calendar Page'
+                      ),
+                    ),
+
+                    //Project Page
+                    const IconButton(
+                      onPressed: null,
+                      icon: Icon(
+                          Icons.file_copy,
+                          color: Colors.yellow,
+                          size: 75,
+                          semanticLabel: 'Project Page'
+                      ),
+                    ),
+
+                    //Shop Page
+                    IconButton(
+                      onPressed: (){
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (context) => ShopPage(title: "Shop")),
+                            ModalRoute.withName("Calendar")
+                        );
+                      },
+                      icon: const Icon(
+                          Icons.currency_exchange,
+                          color: Colors.yellow,
+                          size: 75,
+                          semanticLabel: 'Shop Page'
+                      ),
+                    ),
+
+                    //Settings Page
+                    IconButton(
+                      onPressed: (){
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (context) => SettingsStatsPage(title: "SettingsStats")),
+                            ModalRoute.withName("Calendar")
+                        );
+                      },
+                      icon: const Icon(
+                          Icons.settings,
+                          color: Colors.yellow,
+                          size: 75,
+                          semanticLabel: 'Settings Page'
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+
+          ],
+        ),
 
       ),
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 

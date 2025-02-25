@@ -31,6 +31,7 @@ dependencies:
   path_provider:
   swipeable_page_route: '0.4.4'
   go_router:
+  table_calendar: ^3.2.0
   flutter:
     sdk: flutter
 
