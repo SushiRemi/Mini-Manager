@@ -126,7 +126,7 @@ class _ProjectsPage extends State<ProjectsPage> {
                       },
                       icon: const Icon(
                           Icons.calendar_month,
-                          color: Colors.yellow,
+                          color: Colors.white,
                           size: 75,
                           semanticLabel: 'Calendar Page'
                       ),
@@ -153,7 +153,7 @@ class _ProjectsPage extends State<ProjectsPage> {
                       },
                       icon: const Icon(
                           Icons.currency_exchange,
-                          color: Colors.yellow,
+                          color: Colors.white,
                           size: 75,
                           semanticLabel: 'Shop Page'
                       ),
@@ -169,7 +169,7 @@ class _ProjectsPage extends State<ProjectsPage> {
                       },
                       icon: const Icon(
                           Icons.settings,
-                          color: Colors.yellow,
+                          color: Colors.white,
                           size: 75,
                           semanticLabel: 'Settings Page'
                       ),

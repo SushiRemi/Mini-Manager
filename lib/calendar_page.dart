@@ -43,6 +43,10 @@ class _CalendarPage extends State<CalendarPage> {
     data.saveProjects();
   }
 
+  void _load() {
+    data.loadProjects();
+  }
+
   //To get events for selected day
   List<Content> _getEventsForDay(DateTime day){
     //return content list for that day
@@ -69,6 +73,7 @@ class _CalendarPage extends State<CalendarPage> {
 
   @override
   Widget build(BuildContext context) {
+    _load(); //loads in data on build
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -190,6 +195,7 @@ class _CalendarPage extends State<CalendarPage> {
                           //Project Page
                           IconButton(
                             onPressed: (){
+                              _save();
                               Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(builder: (context) => ProjectsPage(title: "Projects")),
                                 ModalRoute.withName("Calendar")
@@ -197,7 +203,7 @@ class _CalendarPage extends State<CalendarPage> {
                             },
                             icon: const Icon(
                                 Icons.file_copy,
-                                color: Colors.yellow,
+                                color: Colors.white,
                                 size: 75,
                                 semanticLabel: 'Project Page'
                             ),
@@ -206,6 +212,7 @@ class _CalendarPage extends State<CalendarPage> {
                           //Shop Page
                           IconButton(
                             onPressed: (){
+                              _save();
                               Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(builder: (context) => ShopPage(title: "Shop")),
                                 ModalRoute.withName("Calendar")
@@ -213,7 +220,7 @@ class _CalendarPage extends State<CalendarPage> {
                             },
                             icon: const Icon(
                                 Icons.currency_exchange,
-                                color: Colors.yellow,
+                                color: Colors.white,
                                 size: 75,
                                 semanticLabel: 'Shop Page'
                             ),
@@ -222,6 +229,7 @@ class _CalendarPage extends State<CalendarPage> {
                           //Settings Page
                           IconButton(
                             onPressed: (){
+                              _save();
                               Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(builder: (context) => SettingsStatsPage(title: "SettingsStats")),
                                 ModalRoute.withName("Calendar")
@@ -229,7 +237,7 @@ class _CalendarPage extends State<CalendarPage> {
                             },
                             icon: const Icon(
                                 Icons.settings,
-                                color: Colors.yellow,
+                                color: Colors.white,
                                 size: 75,
                                 semanticLabel: 'Settings Page'
                             ),

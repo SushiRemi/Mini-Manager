@@ -129,7 +129,7 @@ class _ShopPage extends State<ShopPage> {
                       },
                       icon: const Icon(
                           Icons.calendar_month,
-                          color: Colors.yellow,
+                          color: Colors.white,
                           size: 75,
                           semanticLabel: 'Calendar Page'
                       ),
@@ -145,7 +145,7 @@ class _ShopPage extends State<ShopPage> {
                       },
                       icon: const Icon(
                           Icons.file_copy,
-                          color: Colors.yellow,
+                          color: Colors.white,
                           size: 75,
                           semanticLabel: 'Project Page'
                       ),
@@ -172,7 +172,7 @@ class _ShopPage extends State<ShopPage> {
                       },
                       icon: const Icon(
                           Icons.settings,
-                          color: Colors.yellow,
+                          color: Colors.white,
                           size: 75,
                           semanticLabel: 'Settings Page'
                       ),

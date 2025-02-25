@@ -22,7 +22,6 @@ import 'go_router.dart';
 
 void main() {
   //Main method. starts the app globally, don't need for every page.
-
   runApp(const MyApp());
 }
 
