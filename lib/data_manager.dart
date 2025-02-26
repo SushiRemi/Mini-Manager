@@ -95,7 +95,7 @@ class DataManager {
         } else if (current[0].contains("content")){
           //add content to latest project
           DateTime tempDate = DateTime(int.parse(current[4].substring(0,4)), int.parse(current[4].substring(5,7)), int.parse(current[4].substring(8,10)));
-          Content newContent = Content.create(current[1], current[2], current[3], tempDate, current[5]);
+          Content newContent = Content.create(current[1], current[2], current[3], tempDate, current[5], int.parse(current[6]));
           tempList[tempList.length-1].addContent(newContent);
         }
       }

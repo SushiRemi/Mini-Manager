@@ -33,11 +33,15 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPage extends State<CalendarPage> {
   DataManager data = DataManager();
+  int counter = 0;
 
   //For calendar interactivity initialization
   DateTime _selectedDay = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   DateTime _focusedDay = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   CalendarFormat _calendarFormat = CalendarFormat.month;
+
+  //For dynamically displaying events
+  List<DynamicWidget> _contentWidgetList = [];
 
   void _save() {
     data.saveProjects();
@@ -69,6 +73,15 @@ class _CalendarPage extends State<CalendarPage> {
     }
 
     return contentList;
+  }
+
+  List<DynamicWidget> _updateContentWidgetList(List<Content> contentList){
+    List<DynamicWidget> newContentList = [];
+    for(int i=0; i<contentList.length; i++){
+      newContentList.add(DynamicWidget(contentList[i]));
+    }
+    newContentList.add(DynamicWidget.test(_selectedDay));
+    return newContentList;
   }
 
   @override
@@ -112,6 +125,7 @@ class _CalendarPage extends State<CalendarPage> {
                         setState(() {
                           _selectedDay = selectedDay;
                           _focusedDay = focusedDay; // update `_focusedDay` here as well
+                          _contentWidgetList = _updateContentWidgetList(_getEventsForDay(selectedDay));
                         });
                       },
 
@@ -124,10 +138,12 @@ class _CalendarPage extends State<CalendarPage> {
 
                       onPageChanged: (focusedDay) {
                         _focusedDay = focusedDay;
+                        _contentWidgetList = _updateContentWidgetList(_getEventsForDay(focusedDay));
                       },
 
                       //Calls function to get events, can configure however i like
                       eventLoader: (day) {
+                        _updateContentWidgetList(_getEventsForDay(day));
                         return _getEventsForDay(day);
                       },
 
@@ -138,45 +154,15 @@ class _CalendarPage extends State<CalendarPage> {
                   Expanded(
                     flex: 3,
                     child: ListView(
-                      children: [
-                        Container(
-                          color: Colors.red,
-                          height: 100,
-                          width: 100,
-                        ),
-                        Container(
-                          color: Colors.blue,
-                          height: 100,
-                          width: 100,
-                        ),
-                        Container(
-                          color: Colors.red,
-                          height: 100,
-                          width: 100,
-                        ),
-                        Container(
-                          color: Colors.blue,
-                          height: 100,
-                          width: 100,
-                        ),
-                        Container(
-                          color: Colors.red,
-                          height: 100,
-                          width: 100,
-                        ),
-                        Container(
-                          color: Colors.blue,
-                          height: 100,
-                          width: 100,
-                        ),
-                      ],
+                      children: _contentWidgetList = _updateContentWidgetList(_getEventsForDay(_focusedDay)),
                     ),
                   ),
 
+                  //Bottom Nav Bar
                   Expanded(
                     flex: 1,
                     child: BottomAppBar(
-                      color: Colors.green,
+                      color: Color(0xFF290238),
                       shape: const CircularNotchedRectangle(),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -267,5 +253,77 @@ class _CalendarPage extends State<CalendarPage> {
       NavigationMode.goRouter => GoRouter.of(context).push<void>('/projects'),
       NavigationMode.goRouterBuilder => ProjectsPageRoute().push(context),
     };
+  }
+}
+
+// widget for dynamic text field
+class DynamicWidget extends StatelessWidget {
+  String title = "";
+  String description = "";
+  String status = "";
+  String type = "";
+  int coinValue = 0;
+
+  DynamicWidget(Content content, {super.key}){
+    title = content.getTitle();
+    description = content.getDescription();
+    status = content.getStatus();
+    type = content.getType();
+    coinValue = content.getCoinValue();
+  }
+
+  DynamicWidget.empty({super.key}){
+    title = "Hello";
+    description = "TEST";
+    status = "TEST";
+    type = "TEST";
+    coinValue = 100;
+  }
+
+  DynamicWidget.test(DateTime day, {super.key}){
+    title = day.toString();
+    description = "description here, this is where the description is";
+    status = "Status Here";
+    type = "Type Here";
+    coinValue = 111;
+  }
+
+
+  @override
+  Widget build(BuildContext context){
+    return Container(
+      child: Container(
+        color: Colors.blue,
+        //height: 100,
+        //width: 100,
+        child: TextButton(
+            onPressed: (){
+              //Should change to content viewing page, currently to project for testing
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => ProjectsPage(title: "Projects")),
+                  ModalRoute.withName("Calendar")
+              );
+            },
+            child: Column(
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                  textAlign: TextAlign.left,
+
+                ),
+                Text(description),
+                Text(status),
+                Text(type),
+                Text(coinValue.toString()),
+              ]
+            ),
+        )
+      )
+    );
   }
 }

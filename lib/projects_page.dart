@@ -111,7 +111,7 @@ class _ProjectsPage extends State<ProjectsPage> {
             Expanded(
               flex: 1,
               child: BottomAppBar(
-                color: Colors.green,
+                color: Color(0xFF290238),
                 shape: const CircularNotchedRectangle(),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
