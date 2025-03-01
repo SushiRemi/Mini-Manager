@@ -1,37 +1,40 @@
 import 'content.dart';
 
 class Project{
-  String title = "";
-  String type = "";
-  String description = "";
-  DateTime startDate = DateTime(0,0,0);
-  DateTime endDate = DateTime(0,0,0);
-  String status = "";
-  List<Content> contentList = [];
+  String _title = "";
+  String _type = "";
+  String _description = "";
+  DateTime _startDate = DateTime(0,0,0);
+  DateTime _endDate = DateTime(0,0,0);
+  String _status = "";
+  int _coinValue = 0;
+  List<Content> _contentList = [];
   //List<String> tags = [];
 
 
   Project.empty(){
-    title = "";
-    type = "";
-    description = "";
-    startDate = DateTime(0,0,0);
-    endDate = DateTime(0,0,0);
-    status = "";
-    contentList = [];
+    _title = "";
+    _type = "";
+    _description = "";
+    _startDate = DateTime(0,0,0);
+    _endDate = DateTime(0,0,0);
+    _status = "";
+    _coinValue = 0;
+    _contentList = [];
     //tags = [];
   }
 
-  Project.create(String titleIn, String typeIn, String descriptionIn, DateTime startDateIn, DateTime endDateIn, String statusIn){
-    title = titleIn;
-    type = typeIn;
-    description = descriptionIn;
-    startDate = startDateIn;
-    endDate = endDateIn;
-    status = statusIn;
+  Project.create(String titleIn, String typeIn, String descriptionIn, DateTime startDateIn, DateTime endDateIn, String statusIn, int coinValueIn){
+    _title = titleIn;
+    _type = typeIn;
+    _description = descriptionIn;
+    _startDate = startDateIn;
+    _endDate = endDateIn;
+    _status = statusIn;
+    _coinValue = coinValueIn;
 
     //initialize contentList with the content needed based on the project type (Album, EP, Single, Other)
-    switch (type){
+    switch (_type){
       case "Album":
 
       case "EP":
@@ -45,89 +48,101 @@ class Project{
   }
 
   String getTitle(){
-    return title;
+    return _title;
   }
 
   void setTitle(String newTitle){
-    title = newTitle;
+    _title = newTitle;
   }
 
   String getType(){
-    return type;
+    return _type;
   }
 
   void setType(String newType){
-    type = newType;
+    _type = newType;
   }
 
   String getDescription(){
-    return description;
+    return _description;
   }
 
   void setDescription(String newDescription){
-    description = newDescription;
+    _description = newDescription;
   }
 
   DateTime getStartDate(){
-    return startDate;
+    return _startDate;
   }
 
   void setStartDate(DateTime newStartDate){
-    startDate = newStartDate;
+    _startDate = newStartDate;
   }
 
   DateTime getEndDate(){
-    return endDate;
+    return _endDate;
   }
 
   void setEndDate(DateTime newEndDate){
-    endDate = newEndDate;
+    _endDate = newEndDate;
   }
 
   String getStatus(){
-    return status;
+    return _status;
   }
 
   void setStatus(String newStatus){
-    status = newStatus;
+    _status = newStatus;
+  }
+
+  int getCoinValue(){
+    return _coinValue;
+  }
+
+  void setCoinValue(int coins){
+    _coinValue = coins;
   }
 
   Content getContent(int index){
-    return contentList[index];
+    return _contentList[index];
   }
 
   void addContent(Content c){
     //check for duplicates
-    contentList.add(c);
+    _contentList.add(c);
   }
 
   void removeContent(int index){
     //check if it exists
-    contentList.removeAt(index);
+    _contentList.removeAt(index);
+  }
+
+  List<Content> getContentList(){
+    return _contentList;
   }
 
   String toCSV(){
     String out = "";
     out += "\"project\",,";
-    out += "\"$title\",,";
-    out += "\"$type\",,";
-    out += "\"$description\",,";
-    out += (startDate.toString().substring(0, 10));
+    out += "\"$_title\",,";
+    out += "\"$_type\",,";
+    out += "\"$_description\",,";
+    out += (_startDate.toString().substring(0, 10));
     out += ",,";
-    out += (endDate.toString().substring(0, 10));
+    out += (_endDate.toString().substring(0, 10));
     out += ",,";
-    out += "\"$status\"";
+    out += "\"$_status\"";
     return out; //contentList csv is handled by the content toCSV() function
   }
 
   void sortContentByDate(){ //untested insertion sort, will need version for sorting projects.
-    for (int i = 1; i < contentList.length; i++) {
+    for (int i = 1; i < _contentList.length; i++) {
       int j = i;
 
-      while (j > 0 && contentList[j].getDate().isBefore(contentList[j-1].getDate())) {
-        Content aux = contentList[j];
-        contentList[j] = contentList[j - 1];
-        contentList[j - 1] = aux;
+      while (j > 0 && _contentList[j].getDate().isBefore(_contentList[j-1].getDate())) {
+        Content aux = _contentList[j];
+        _contentList[j] = _contentList[j - 1];
+        _contentList[j - 1] = aux;
         j--;
       }
     }

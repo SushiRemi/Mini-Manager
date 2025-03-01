@@ -66,10 +66,10 @@ class _CalendarPage extends State<CalendarPage> {
       //checks if day is within project range
       if ((day.isAfter(start) || day.compareTo(start) == 0) && (day.isBefore(end) || day.compareTo(end) == 0)){
         Project currentProject = data.projectList[i];
-        for (int j=0; j<currentProject.contentList.length; j++){
+        for (int j=0; j<currentProject.getContentList().length; j++){
           //Check if content is for current day
-          if (currentProject.contentList[j].getDate().compareTo(day) == 0){
-            contentList.add(currentProject.contentList[j]);
+          if (currentProject.getContentList()[j].getDate().compareTo(day) == 0){
+            contentList.add(currentProject.getContentList()[j]);
           }
         }
       }
@@ -186,7 +186,7 @@ class _CalendarPage extends State<CalendarPage> {
                             onPressed: (){
                               _save();
                               Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(builder: (context) => ProjectsPage(title: "Projects")),
+                                MaterialPageRoute(builder: (context) => const ProjectsPage(title: "Projects")),
                                 ModalRoute.withName("Calendar")
                               );
                             },

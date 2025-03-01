@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:mini_manager/calendar_page.dart';
+import 'package:mini_manager/project_edit_page.dart';
 import 'package:mini_manager/projects_page.dart';
 import 'package:mini_manager/shop_page.dart';
 import 'package:mini_manager/settings_stats_page.dart';
+import 'package:mini_manager/content.dart';
+import 'package:mini_manager/project.dart';
+import 'package:mini_manager/data_manager.dart';
+
+//used for description text
+import 'package:expandable_text/expandable_text.dart';
 
 //used for swiping between pages
 import 'package:go_router/go_router.dart';
@@ -22,21 +29,41 @@ class ProjectsPage extends StatefulWidget {
 
   final String title;
 
+
+
   @override
   State<ProjectsPage> createState() => _ProjectsPage();
 }
 
 class _ProjectsPage extends State<ProjectsPage> {
-  int _counter = 0;
+  DataManager data = DataManager();
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  //For dynamically displaying events
+  List<ProjectWidget> _projectWidgetList = [];
+
+  //save projects to file
+  void _save() {
+    data.saveProjects();
+  }
+
+  //load projects from file
+  void _load() {
+    data.loadProjects();
+  }
+
+  //to update project widgets
+  List<ProjectWidget> _updateProjectWidgetList(List<Project> projectList){
+    List<ProjectWidget> newProjectList = [];
+    for(int i=0; i<projectList.length; i++){
+      newProjectList.add(ProjectWidget(projectList[i]));
+    }
+    newProjectList.add(ProjectWidget.test());
+    return newProjectList;
   }
 
   @override
   Widget build(BuildContext context) {
+    _load();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -57,54 +84,49 @@ class _ProjectsPage extends State<ProjectsPage> {
 
         child: Column(
           children: [
-            //Project List
             Expanded(
               flex: 7,
-                child: ListView(
-                  children: [
-                    Container(
-                      height: 100,
-                      color: Colors.purple
-                    ),
-                    Container(
-                      height: 100,
-                      color: Colors.red
-                    ),
-                    Container(
-                        height: 100,
-                        color: Colors.purple
-                    ),
-                    Container(
-                        height: 100,
-                        color: Colors.red
-                    ),
-                    Container(
-                        height: 100,
-                        color: Colors.purple
-                    ),
-                    Container(
-                        height: 100,
-                        color: Colors.red
-                    ),
-                    Container(
-                        height: 100,
-                        color: Colors.purple
-                    ),
-                    Container(
-                        height: 100,
-                        color: Colors.red
-                    ),
-                    Container(
-                        height: 100,
-                        color: Colors.purple
-                    ),
-                    Container(
-                        height: 100,
-                        color: Colors.red
-                    ),
+              child: Column(
+                children: [
+                  //Create new project button
+                  Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            color: Colors.black12,
+                            child:
+                            Expanded(
+                              child: TextButton(
+                                onPressed: (){
+                                  _save();
+                                  Navigator.of(context).push(
+                                      MaterialPageRoute(builder: (context) => const ProjectEditPage(title: "Add/Edit Project")),
+                                  );
+                                },
+                                child:
+                                const Text(
+                                  "Create New Project",
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ]
+                  ),
 
-                  ],
-                )
+                  //Project List
+                  Expanded(
+                      child: ListView(
+                        children: _projectWidgetList = _updateProjectWidgetList(data.projectList),
+                      )
+                  ),
+                ],
+              )
             ),
 
             //Bottom Nav Bar
@@ -119,6 +141,7 @@ class _ProjectsPage extends State<ProjectsPage> {
                     //Calendar Page
                     IconButton(
                       onPressed: (){
+                        _save();
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(builder: (context) => CalendarPage(title: "Calendar")),
                             ModalRoute.withName("Calendar")
@@ -146,6 +169,7 @@ class _ProjectsPage extends State<ProjectsPage> {
                     //Shop Page
                     IconButton(
                       onPressed: (){
+                        _save();
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(builder: (context) => ShopPage(title: "Shop")),
                             ModalRoute.withName("Calendar")
@@ -162,6 +186,7 @@ class _ProjectsPage extends State<ProjectsPage> {
                     //Settings Page
                     IconButton(
                       onPressed: (){
+                        _save();
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(builder: (context) => SettingsStatsPage(title: "SettingsStats")),
                             ModalRoute.withName("Calendar")
@@ -186,24 +211,151 @@ class _ProjectsPage extends State<ProjectsPage> {
 
     );
   }
+}
 
-  //Method to go to shop
-  Future<void> _pushShopPage(BuildContext context) async {
-    return switch (NavigationMode.current){
-      NavigationMode.navigator => Navigator.of(context)
-          .push<void>(SwipeablePageRoute(builder: (_) => const ShopPage(title: "Shop"))),
-      NavigationMode.goRouter => GoRouter.of(context).push<void>('/shop'),
-      NavigationMode.goRouterBuilder => ShopPageRoute().push(context),
-    };
+
+// widget for dynamic text field
+class ProjectWidget extends StatelessWidget {
+  String title = "";
+  String description = "";
+  String status = "";
+  String type = "";
+  int coinValue = 0;
+  DateTime startDate = DateTime(2025, 03, 11);
+  DateTime endDate = DateTime(2025, 03, 24);
+
+  ProjectWidget(Project project, {super.key}){
+    title = project.getTitle();
+    description = project.getDescription();
+    status = project.getStatus();
+    type = project.getType();
+    coinValue = project.getCoinValue();
+    startDate = project.getStartDate();
+    endDate = project.getEndDate();
   }
 
-  //Method to go to calendar
-  Future<void> _pushCalendarPage(BuildContext context) async {
-    return switch (NavigationMode.current){
-      NavigationMode.navigator => Navigator.of(context)
-          .push<void>(SwipeablePageRoute(builder: (_) => const CalendarPage(title: "Calendar"))),
-      NavigationMode.goRouter => GoRouter.of(context).push<void>('/calendar'),
-      NavigationMode.goRouterBuilder => CalendarPageRoute().push(context),
-    };
+  ProjectWidget.empty({super.key}){
+    title = "Hello";
+    description = "TEST";
+    status = "TEST";
+    type = "TEST";
+    coinValue = 100;
+    startDate = DateTime(2025, 03, 11);
+    endDate = DateTime(2025, 03, 24);
+  }
+
+  ProjectWidget.test({super.key}){
+    title = "Test Project";
+    description = "description here, this is where the description is description here, this is where the description isdescription here, this is where the description isdescription here, this is where the description is";
+    status = "Status Here";
+    type = "Type Here";
+    coinValue = 111;
+    startDate = DateTime(2025, 03, 11);
+    endDate = DateTime(2025, 03, 24);
+  }
+
+
+  @override
+  Widget build(BuildContext context){
+    String startDateString = ("${startDate.month}/${startDate.day}/${startDate.year}");
+    String endDateString = ("${endDate.month}/${endDate.day}/${endDate.year}");
+    String dateString = ("$startDateString - $endDateString");
+    return Container(
+        color: Colors.blue,
+        //height: 100,
+        //width: 100,
+        child: TextButton(
+          onPressed: (){
+            //Should change to project viewing page
+            // Navigator.of(context).pushAndRemoveUntil(
+            //     MaterialPageRoute(builder: (context) => ProjectsPage(title: "Projects")),
+            //     ModalRoute.withName("Calendar")
+            // );
+          },
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  dateString,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+                ExpandableText(
+                  description,
+                  expandText: "Show Full",
+                  collapseText: "Show Less",
+                  maxLines: 3,
+                  animation: true,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black45,
+                  ),
+                ),
+                Row(
+                    children: [
+                      Expanded(
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            type,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          )
+                      ),
+                      Expanded(
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            status,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          )
+                      ),
+                      Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Image(
+                                image: AssetImage("assets/coins.png"),
+                                width: 20,
+                                height: 20,
+                              ),
+                              Text(
+                                coinValue.toString(),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              )
+                            ],
+                          )
+
+                      ),
+                    ]
+                ),
+
+              ]
+          ),
+        )
+    );
   }
 }
