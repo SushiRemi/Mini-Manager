@@ -7,6 +7,9 @@ import 'package:mini_manager/data_manager.dart';
 import 'package:mini_manager/project.dart';
 import 'package:mini_manager/content.dart';
 
+//used for description text
+import 'package:expandable_text/expandable_text.dart';
+
 
 //used for swiping between pages
 import 'package:go_router/go_router.dart';
@@ -231,7 +234,7 @@ class _CalendarPage extends State<CalendarPage> {
                         ],
                       ),
                     ),
-                  )
+                  ),
                 ]
               ),
 
@@ -244,21 +247,12 @@ class _CalendarPage extends State<CalendarPage> {
 
     );
   }
-
-  //Method to go to shop
-  Future<void> _pushProjectsPage(BuildContext context) async {
-    return switch (NavigationMode.current){
-      NavigationMode.navigator => Navigator.of(context)
-        .push<void>(SwipeablePageRoute(builder: (_) => const ProjectsPage(title: "Projects"))),
-      NavigationMode.goRouter => GoRouter.of(context).push<void>('/projects'),
-      NavigationMode.goRouterBuilder => ProjectsPageRoute().push(context),
-    };
-  }
 }
 
 // widget for dynamic text field
 class DynamicWidget extends StatelessWidget {
   String title = "";
+  String parent = "";
   String description = "";
   String status = "";
   String type = "";
@@ -266,6 +260,7 @@ class DynamicWidget extends StatelessWidget {
 
   DynamicWidget(Content content, {super.key}){
     title = content.getTitle();
+    parent = content.getParent();
     description = content.getDescription();
     status = content.getStatus();
     type = content.getType();
@@ -274,6 +269,7 @@ class DynamicWidget extends StatelessWidget {
 
   DynamicWidget.empty({super.key}){
     title = "Hello";
+    parent = "Parent Project";
     description = "TEST";
     status = "TEST";
     type = "TEST";
@@ -282,7 +278,8 @@ class DynamicWidget extends StatelessWidget {
 
   DynamicWidget.test(DateTime day, {super.key}){
     title = day.toString();
-    description = "description here, this is where the description is";
+    parent = "PARENT PROJECT";
+    description = "description here, this is where the description is description here, this is where the description isdescription here, this is where the description isdescription here, this is where the description is";
     status = "Status Here";
     type = "Type Here";
     coinValue = 111;
@@ -292,37 +289,100 @@ class DynamicWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return Container(
-      child: Container(
-        color: Colors.blue,
-        //height: 100,
-        //width: 100,
-        child: TextButton(
-            onPressed: (){
-              //Should change to content viewing page, currently to project for testing
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => ProjectsPage(title: "Projects")),
-                  ModalRoute.withName("Calendar")
-              );
-            },
-            child: Column(
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                  textAlign: TextAlign.left,
-
+      color: Colors.blue,
+      //height: 100,
+      //width: 100,
+      child: TextButton(
+          onPressed: (){
+            //Should change to content viewing page, currently to project for testing
+            // Navigator.of(context).pushAndRemoveUntil(
+            //     MaterialPageRoute(builder: (context) => ProjectsPage(title: "Projects")),
+            //     ModalRoute.withName("Calendar")
+            // );
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
-                Text(description),
-                Text(status),
-                Text(type),
-                Text(coinValue.toString()),
-              ]
-            ),
-        )
+                textAlign: TextAlign.left,
+              ),
+              Text(
+                ("Project: $parent"),
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              ExpandableText(
+                description,
+                expandText: "Show Full",
+                collapseText: "Show Less",
+                maxLines: 1,
+                animation: true,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black45,
+                ),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        type,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      )
+                  ),
+                  Expanded(
+                      child: Text(
+                        textAlign: TextAlign.center,
+                          status,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                      )
+                  ),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Image(
+                          image: AssetImage("assets/coins.png"),
+                          width: 20,
+                          height: 20,
+                        ),
+                        Text(
+                          coinValue.toString(),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        )
+                      ],
+                    )
+
+                  ),
+                ]
+              ),
+
+            ]
+          ),
       )
     );
   }

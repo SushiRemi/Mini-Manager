@@ -1,5 +1,8 @@
+import 'package:mini_manager/project.dart';
+
 class Content{
   String _title = "";
+  String _parent = "";
   String _type = "";
   String _description = "";
   //String date = "";
@@ -10,6 +13,7 @@ class Content{
 
   Content.empty(){
     _title = "";
+    _parent = "";
     _type = "";
     _description = "";
     _date = DateTime(0,0,0);
@@ -18,8 +22,9 @@ class Content{
     _coinValue = 0;
   }
 
-  Content.create(String titleIn, String typeIn, String descriptionIn, DateTime dateIn, String statusIn, int coinValueIn){
+  Content.create(String titleIn, String parentIn, String typeIn, String descriptionIn, DateTime dateIn, String statusIn, int coinValueIn){
     _title = titleIn;
+    _parent = parentIn;
     _type = typeIn;
     _description = descriptionIn;
     _date = dateIn;
@@ -76,27 +81,20 @@ class Content{
     _coinValue = newCoinValue;
   }
 
-  /*
-  List<String> getTags(){
-    return tags;
+  String getParent(){
+    return _parent;
   }
 
-  void addTag(String newTag){
-    //need to check for duplicates
-    tags.add(newTag);
+  void setParent(Project project){
+    _parent = project.getTitle();
   }
-
-  void removeTag(int index){
-    //check if exists
-    tags.removeAt(index);
-  }
-  */
 
 
   String toCSV(){
     String out = "";
     out += "\"content\",,";
     out += "\"$_title\",,";
+    out += "\"$_parent\",,";
     out += "\"$_type\",,";
     out += "\"$_description\",,";
     out += (_date.toString().substring(0, 10));
