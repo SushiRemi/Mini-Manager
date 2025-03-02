@@ -100,7 +100,7 @@ class _ProjectsPage extends State<ProjectsPage> {
                                 onPressed: (){
                                   _save();
                                   Navigator.of(context).push(
-                                      MaterialPageRoute(builder: (context) => const ProjectEditPage(title: "Add/Edit Project")),
+                                      MaterialPageRoute(builder: (context) => const ProjectEditPage(title: "Add Project", index: -1,)),
                                   );
                                 },
                                 child:
