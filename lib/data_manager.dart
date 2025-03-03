@@ -62,6 +62,9 @@ class DataManager {
 //saves the current projectList to a file
   Future<File> saveProjects() async{
     final file = await _projectsFile;
+
+    sortProjects();
+
     for (int i=0; i < projectList.length; i++){
       if (i==0) {
         file.writeAsStringSync("${projectList[i].toCSV()}\n"); //erases all old data and starts fresh
@@ -71,6 +74,11 @@ class DataManager {
     }
     //file.writeAsStringSync("hello");
     //file.writeAsStringSync(" universe!", mode: FileMode.append);
+
+    for(int i=0; i<projectList.length; i++){
+      print(projectList[i].toCSV());
+    }
+
     return file;
   }
 
@@ -169,7 +177,16 @@ class DataManager {
 
   //Sort projects by release date
   void sortProjects(){
+    for (int i = 1; i < projectList.length; i++) {
+      int j = i;
 
+      while (j > 0 && projectList[j].getReleaseDate().isBefore(projectList[j-1].getReleaseDate())) {
+        Project aux = projectList[j];
+        projectList[j] = projectList[j - 1];
+        projectList[j - 1] = aux;
+        j--;
+      }
+    }
   }
 
   //Sort shop items by cost

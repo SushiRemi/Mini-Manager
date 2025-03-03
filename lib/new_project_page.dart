@@ -106,6 +106,7 @@ class _NewProjectPage extends State<NewProjectPage> {
       data.sortProjects();
       data.updateStats();
       _save();
+      print("Project sent to data manager");
 
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const ProjectsPage(title: "Projects")),
