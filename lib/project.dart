@@ -4,47 +4,57 @@ class Project{
   String _title = "";
   String _type = "";
   String _description = "";
-  DateTime _startDate = DateTime(0,0,0);
-  DateTime _endDate = DateTime(0,0,0);
+  DateTime _releaseDate = DateTime(0,0,0);
   String _status = "";
   int _coinValue = 0;
   List<Content> _contentList = [];
-  //List<String> tags = [];
 
 
   Project.empty(){
     _title = "";
     _type = "";
     _description = "";
-    _startDate = DateTime(0,0,0);
-    _endDate = DateTime(0,0,0);
+    _releaseDate = DateTime(0,0,0);
     _status = "";
     _coinValue = 0;
     _contentList = [];
-    //tags = [];
   }
 
-  Project.create(String titleIn, String typeIn, String descriptionIn, DateTime startDateIn, DateTime endDateIn, String statusIn, int coinValueIn){
+  Project.create(String titleIn, String typeIn, String descriptionIn, DateTime releaseDateIn, String statusIn, int coinValueIn){
     _title = titleIn;
     _type = typeIn;
     _description = descriptionIn;
-    _startDate = startDateIn;
-    _endDate = endDateIn;
+    _releaseDate = releaseDateIn;
     _status = statusIn;
     _coinValue = coinValueIn;
 
-    //initialize contentList with the content needed based on the project type (Album, EP, Single, Other)
-    switch (_type){
-      case "Album":
+    //loading in the content list is handled by the data manager
+  }
 
-      case "EP":
+  Project.createNew(String titleIn, String typeIn, String descriptionIn, DateTime releaseDateIn, int mainContentIn){
+    _title = titleIn;
+    _type = typeIn.toLowerCase();
+    _description = descriptionIn;
+    _releaseDate = releaseDateIn;
+    _status = "in progress";
+    _coinValue = 0;
+    int contentNum = mainContentIn;
+    int daysBetween = 3;
 
-      case "Single":
-
-      case "Other":
-
-      default:
+    //Calculate daysBetween
+    int dayRange = findDayRange(DateTime.now(), _releaseDate);
+    bool valid = false;
+    while (!valid && daysBetween > 0){
+      if (dayRange > 3*contentNum * (daysBetween+1)){
+        valid = true;
+      } else {
+        daysBetween -= 1;
+      }
     }
+    
+    //initialize contentList with the content needed based on contentNum, _releaseDate, and _daysBetween
+
+    
   }
 
   String getTitle(){
@@ -71,21 +81,14 @@ class Project{
     _description = newDescription;
   }
 
-  DateTime getStartDate(){
-    return _startDate;
+  DateTime getReleaseDate(){
+    return _releaseDate;
   }
 
-  void setStartDate(DateTime newStartDate){
-    _startDate = newStartDate;
+  void setReleaseDate(DateTime newStartDate){
+    _releaseDate = newStartDate;
   }
 
-  DateTime getEndDate(){
-    return _endDate;
-  }
-
-  void setEndDate(DateTime newEndDate){
-    _endDate = newEndDate;
-  }
 
   String getStatus(){
     return _status;
@@ -127,9 +130,7 @@ class Project{
     out += "\"$_title\",,";
     out += "\"$_type\",,";
     out += "\"$_description\",,";
-    out += (_startDate.toString().substring(0, 10));
-    out += ",,";
-    out += (_endDate.toString().substring(0, 10));
+    out += (_releaseDate.toString().substring(0, 10));
     out += ",,";
     out += "\"$_status\"";
     return out; //contentList csv is handled by the content toCSV() function
@@ -146,6 +147,12 @@ class Project{
         j--;
       }
     }
+  }
+
+  int findDayRange(DateTime from, DateTime to) {
+    from = DateTime(from.year, from.month, from.day);
+    to = DateTime(to.year, to.month, to.day);
+    return (to.difference(from).inHours / 24).round();
   }
 }
 

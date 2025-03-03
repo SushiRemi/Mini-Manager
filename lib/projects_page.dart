@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mini_manager/calendar_page.dart';
-import 'package:mini_manager/project_edit_page.dart';
+import 'package:mini_manager/new_project_page.dart';
 import 'package:mini_manager/projects_page.dart';
 import 'package:mini_manager/shop_page.dart';
 import 'package:mini_manager/settings_stats_page.dart';
@@ -71,17 +71,6 @@ class _ProjectsPage extends State<ProjectsPage> {
         title: Text(widget.title),
       ),
       body: Center(
-
-        // //Swipe left to go to shop, right to go to calendar
-        //   child: GestureDetector(
-        //       onPanUpdate: (details) {
-        //         //swiping in left direction
-        //         if (details.delta.dx < 0) {
-        //           _pushShopPage(context);
-        //         }
-        //       }
-        //   )
-
         child: Column(
           children: [
             Expanded(
@@ -100,7 +89,7 @@ class _ProjectsPage extends State<ProjectsPage> {
                                 onPressed: (){
                                   _save();
                                   Navigator.of(context).push(
-                                      MaterialPageRoute(builder: (context) => const ProjectEditPage(title: "Add Project", index: -1,)),
+                                      MaterialPageRoute(builder: (context) => const NewProjectPage(title: "Add Project", index: -1,)),
                                   );
                                 },
                                 child:
@@ -221,8 +210,7 @@ class ProjectWidget extends StatelessWidget {
   String status = "";
   String type = "";
   int coinValue = 0;
-  DateTime startDate = DateTime(2025, 03, 11);
-  DateTime endDate = DateTime(2025, 03, 24);
+  DateTime releaseDate = DateTime(2025, 03, 11);
 
   ProjectWidget(Project project, {super.key}){
     title = project.getTitle();
@@ -230,8 +218,7 @@ class ProjectWidget extends StatelessWidget {
     status = project.getStatus();
     type = project.getType();
     coinValue = project.getCoinValue();
-    startDate = project.getStartDate();
-    endDate = project.getEndDate();
+    releaseDate = project.getReleaseDate();
   }
 
   ProjectWidget.empty({super.key}){
@@ -240,8 +227,7 @@ class ProjectWidget extends StatelessWidget {
     status = "TEST";
     type = "TEST";
     coinValue = 100;
-    startDate = DateTime(2025, 03, 11);
-    endDate = DateTime(2025, 03, 24);
+    releaseDate = DateTime(2025, 03, 11);
   }
 
   ProjectWidget.test({super.key}){
@@ -250,16 +236,14 @@ class ProjectWidget extends StatelessWidget {
     status = "Status Here";
     type = "Type Here";
     coinValue = 111;
-    startDate = DateTime(2025, 03, 11);
-    endDate = DateTime(2025, 03, 24);
+    releaseDate = DateTime(2025, 03, 11);
   }
 
 
   @override
   Widget build(BuildContext context){
-    String startDateString = ("${startDate.month}/${startDate.day}/${startDate.year}");
-    String endDateString = ("${endDate.month}/${endDate.day}/${endDate.year}");
-    String dateString = ("$startDateString - $endDateString");
+    String releaseDateString = ("${releaseDate.month}/${releaseDate.day}/${releaseDate.year}");
+    String dateString = (releaseDateString);
     return Container(
         color: Colors.blue,
         //height: 100,

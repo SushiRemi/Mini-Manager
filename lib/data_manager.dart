@@ -89,9 +89,8 @@ class DataManager {
       for (int i=0; i<contents.length; i++){
         var current = contents[i].split(',,');
         if(current[0].contains("project")){
-          DateTime tempStart = DateTime(int.parse(current[4].substring(0,4)), int.parse(current[4].substring(5,7)), int.parse(current[4].substring(8,10)));
-          DateTime tempEnd = DateTime(int.parse(current[5].substring(0,4)), int.parse(current[5].substring(5,7)), int.parse(current[5].substring(8,10)));
-          tempList.add(Project.create(current[1], current[2], current[3], tempStart, tempEnd, current[6], int.parse(current[7])));
+          DateTime tempDate = DateTime(int.parse(current[4].substring(0,4)), int.parse(current[4].substring(5,7)), int.parse(current[4].substring(8,10)));
+          tempList.add(Project.create(current[1], current[2], current[3], tempDate, current[6], int.parse(current[7])));
         } else if (current[0].contains("content")){
           //add content to latest project
           DateTime tempDate = DateTime(int.parse(current[5].substring(0,4)), int.parse(current[5].substring(5,7)), int.parse(current[5].substring(8,10)));
@@ -166,5 +165,19 @@ class DataManager {
       // If encountering an error, return 1
       return 1;
     }
+  }
+
+  //Sort projects by release date
+  void sortProjects(){
+
+  }
+
+  //Sort shop items by cost
+  void sortItems(){
+
+  }
+
+  void updateStats(){
+
   }
 }

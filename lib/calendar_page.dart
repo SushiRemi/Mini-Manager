@@ -60,17 +60,13 @@ class _CalendarPage extends State<CalendarPage> {
     List<Content> contentList = [];
 
     for(int i=0; i<data.projectList.length; i++){
-      DateTime start = data.projectList[i].getStartDate();
-      DateTime end = data.projectList[i].getEndDate();
 
       //checks if day is within project range
-      if ((day.isAfter(start) || day.compareTo(start) == 0) && (day.isBefore(end) || day.compareTo(end) == 0)){
-        Project currentProject = data.projectList[i];
-        for (int j=0; j<currentProject.getContentList().length; j++){
-          //Check if content is for current day
-          if (currentProject.getContentList()[j].getDate().compareTo(day) == 0){
-            contentList.add(currentProject.getContentList()[j]);
-          }
+      Project currentProject = data.projectList[i];
+      for (int j=0; j<currentProject.getContentList().length; j++){
+        //Check if content is for current day
+        if (currentProject.getContentList()[j].getDate().compareTo(day) == 0){
+          contentList.add(currentProject.getContentList()[j]);
         }
       }
     }
@@ -187,7 +183,7 @@ class _CalendarPage extends State<CalendarPage> {
                               _save();
                               Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(builder: (context) => const ProjectsPage(title: "Projects")),
-                                ModalRoute.withName("Calendar")
+                                ModalRoute.withName("Projects")
                               );
                             },
                             icon: const Icon(
@@ -204,7 +200,7 @@ class _CalendarPage extends State<CalendarPage> {
                               _save();
                               Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(builder: (context) => ShopPage(title: "Shop")),
-                                ModalRoute.withName("Calendar")
+                                ModalRoute.withName("Shop")
                               );
                             },
                             icon: const Icon(
@@ -221,7 +217,7 @@ class _CalendarPage extends State<CalendarPage> {
                               _save();
                               Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(builder: (context) => SettingsStatsPage(title: "SettingsStats")),
-                                ModalRoute.withName("Calendar")
+                                ModalRoute.withName("SettingsStats")
                               );
                             },
                             icon: const Icon(
