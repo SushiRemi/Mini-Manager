@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mini_manager/calendar_page.dart';
 import 'package:mini_manager/new_project_page.dart';
@@ -7,6 +9,9 @@ import 'package:mini_manager/settings_stats_page.dart';
 import 'package:mini_manager/content.dart';
 import 'package:mini_manager/project.dart';
 import 'package:mini_manager/data_manager.dart';
+
+//for loading data after first building widget
+import 'package:after_layout/after_layout.dart';
 
 //used for description text
 import 'package:expandable_text/expandable_text.dart';
@@ -35,8 +40,9 @@ class ProjectsPage extends StatefulWidget {
   State<ProjectsPage> createState() => _ProjectsPage();
 }
 
-class _ProjectsPage extends State<ProjectsPage> {
+class _ProjectsPage extends State<ProjectsPage> with AfterLayoutMixin<ProjectsPage> {
   DataManager data = DataManager();
+
 
   //For dynamically displaying events
   List<ProjectWidget> _projectWidgetList = [];
@@ -149,9 +155,13 @@ class _ProjectsPage extends State<ProjectsPage> {
                     ),
 
                     //Project Page
-                    const IconButton(
-                      onPressed: null,
-                      icon: Icon(
+                    IconButton(
+                      onPressed: (){
+                        setState(() {
+                          _projectWidgetList = _updateProjectWidgetList(data.projectList);
+                        });
+                      },
+                      icon: const Icon(
                           Icons.file_copy,
                           color: Colors.yellow,
                           size: 75,
@@ -203,6 +213,14 @@ class _ProjectsPage extends State<ProjectsPage> {
       ),
 
     );
+  }
+
+  @override
+  void afterFirstLayout(BuildContext context) async{
+    // Calling the same function "after layout" to resolve the issue.
+    setState(() {
+      _projectWidgetList = _updateProjectWidgetList(data.projectList);
+    });
   }
 }
 

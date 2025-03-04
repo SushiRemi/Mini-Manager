@@ -7,6 +7,9 @@ import 'package:mini_manager/data_manager.dart';
 import 'package:mini_manager/project.dart';
 import 'package:mini_manager/content.dart';
 
+//for loading data after first building widget
+import 'package:after_layout/after_layout.dart';
+
 //used for description text
 import 'package:expandable_text/expandable_text.dart';
 
@@ -34,7 +37,8 @@ class CalendarPage extends StatefulWidget {
   State<CalendarPage> createState() => _CalendarPage();
 }
 
-class _CalendarPage extends State<CalendarPage> {
+class _CalendarPage extends State<CalendarPage> with AfterLayoutMixin<CalendarPage>{
+  //DataManager data = DataManager();
   DataManager data = DataManager();
   int counter = 0;
 
@@ -53,7 +57,6 @@ class _CalendarPage extends State<CalendarPage> {
   void _load() {
     data.loadProjects();
     print("loaded projects");
-    print(data.projectList.length);
   }
 
   //To get events for selected day
@@ -95,13 +98,17 @@ class _CalendarPage extends State<CalendarPage> {
   );
 
   @override
+  void afterFirstLayout(BuildContext context)  {
+    // Calling the same function "after layout" to resolve the issue.
+    setState(() {
+      _focusedDay = DateTime.now();
+      _contentWidgetList = _updateContentWidgetList(_getEventsForDay(DateTime.now()));
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     _load(); //loads in data on build
-
-    //print(data.projectList.length);
-    // for (int i=0; i<data.projectList.length; i++){
-    //   print(data.projectList[i].toCSV());
-    // }
 
 
     return Scaffold(
@@ -160,6 +167,7 @@ class _CalendarPage extends State<CalendarPage> {
 
                       //Calls function to get events, can configure however i like
                       eventLoader: (day) {
+                        //_load();
                         _updateContentWidgetList(_getEventsForDay(day));
                         return _getEventsForDay(day);
                       },
@@ -185,9 +193,14 @@ class _CalendarPage extends State<CalendarPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           //Calendar Page
-                          const IconButton(
-                              onPressed: null,
-                              icon: Icon(
+                          IconButton(
+                              onPressed: (){
+                                setState(() {
+                                  _focusedDay = DateTime.now();
+                                  _contentWidgetList = _updateContentWidgetList(_getEventsForDay(DateTime.now()));
+                                });
+                              },
+                              icon: const Icon(
                                 Icons.calendar_month,
                                 color: Colors.yellow,
                                 size: 75,

@@ -109,7 +109,11 @@ class Project{
 
     //Sort content
     sortContentByDate();
-    
+
+    //Calculate total coin amount
+    for(int i=0; i<_contentList.length; i++){
+      _coinValue += _contentList[i].getCoinValue();
+    }
   }
 
   String getTitle(){

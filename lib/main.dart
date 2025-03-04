@@ -4,6 +4,7 @@ import 'package:mini_manager/calendar_page.dart';
 import 'package:mini_manager/project.dart';
 import 'package:mini_manager/shopitem.dart';
 import 'data_manager.dart';
+import 'package:mini_manager/data_manager.dart';
 
 //imports for saving/loading files
 import 'package:path_provider/path_provider.dart';
@@ -34,6 +35,7 @@ enum NavigationMode{
 }
 
 class MyApp extends StatelessWidget {
+
   const MyApp({super.key});
 
   // This widget is the root of your application.
@@ -44,6 +46,7 @@ class MyApp extends StatelessWidget {
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       useMaterial3: true,
     );
+
 
     //Navigation goRouter code for page swiping
     return switch (NavigationMode.current){
