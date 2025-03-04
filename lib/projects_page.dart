@@ -54,6 +54,7 @@ class _ProjectsPage extends State<ProjectsPage> {
   //to update project widgets
   List<ProjectWidget> _updateProjectWidgetList(List<Project> projectList){
     List<ProjectWidget> newProjectList = [];
+    //print(projectList.length);
     for(int i=0; i<projectList.length; i++){
       newProjectList.add(ProjectWidget(projectList[i]));
     }
@@ -64,6 +65,8 @@ class _ProjectsPage extends State<ProjectsPage> {
   @override
   Widget build(BuildContext context) {
     _load();
+    //print("Project List Length: ");
+    // print(data.projectList.length);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -71,7 +74,8 @@ class _ProjectsPage extends State<ProjectsPage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
+        child: Flex(
+          direction: Axis.vertical,
           children: [
             Expanded(
               flex: 7,
@@ -89,7 +93,7 @@ class _ProjectsPage extends State<ProjectsPage> {
                                 onPressed: (){
                                   _save();
                                   Navigator.of(context).push(
-                                      MaterialPageRoute(builder: (context) => const NewProjectPage(title: "Add Project", index: -1,)),
+                                      MaterialPageRoute(builder: (context) => NewProjectPage(title: "Add Project", index: -1,)),
                                   );
                                 },
                                 child:
@@ -122,7 +126,7 @@ class _ProjectsPage extends State<ProjectsPage> {
             Expanded(
               flex: 1,
               child: BottomAppBar(
-                color: Color(0xFF290238),
+                color: const Color(0xFF290238),
                 shape: const CircularNotchedRectangle(),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -177,7 +181,7 @@ class _ProjectsPage extends State<ProjectsPage> {
                       onPressed: (){
                         _save();
                         Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) => SettingsStatsPage(title: "SettingsStats")),
+                            MaterialPageRoute(builder: (context) => const SettingsStatsPage(title: "SettingsStats")),
                             ModalRoute.withName("Calendar")
                         );
                       },

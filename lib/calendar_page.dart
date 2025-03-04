@@ -52,20 +52,26 @@ class _CalendarPage extends State<CalendarPage> {
 
   void _load() {
     data.loadProjects();
+    print("loaded projects");
+    print(data.projectList.length);
   }
 
   //To get events for selected day
   List<Content> _getEventsForDay(DateTime day){
     //return content list for that day
     List<Content> contentList = [];
-
+    //print(day);
     for(int i=0; i<data.projectList.length; i++){
-
       //checks if day is within project range
       Project currentProject = data.projectList[i];
+      //print(currentProject.toCSV());
       for (int j=0; j<currentProject.getContentList().length; j++){
         //Check if content is for current day
-        if (currentProject.getContentList()[j].getDate().compareTo(day) == 0){
+        DateTime date = currentProject.getContentList()[j].getDate();
+        String currentDate = date.toString();
+        //print("Checking Content: $currentDate");
+        if (date.year == day.year && date.month == day.month && date.day == day.day){
+          //print("CONTENT FOUND");
           contentList.add(currentProject.getContentList()[j]);
         }
       }
@@ -79,13 +85,25 @@ class _CalendarPage extends State<CalendarPage> {
     for(int i=0; i<contentList.length; i++){
       newContentList.add(DynamicWidget(contentList[i]));
     }
-    newContentList.add(DynamicWidget.test(_selectedDay));
+    //newContentList.add(DynamicWidget.test(_selectedDay));
     return newContentList;
   }
+
+  final Future<String> _calculation = Future<String>.delayed(
+    const Duration(seconds: 2),
+        () => 'Data Loaded',
+  );
 
   @override
   Widget build(BuildContext context) {
     _load(); //loads in data on build
+
+    //print(data.projectList.length);
+    // for (int i=0; i<data.projectList.length; i++){
+    //   print(data.projectList[i].toCSV());
+    // }
+
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -182,7 +200,7 @@ class _CalendarPage extends State<CalendarPage> {
                             onPressed: (){
                               _save();
                               Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(builder: (context) => const ProjectsPage(title: "Projects")),
+                                MaterialPageRoute(builder: (context) => ProjectsPage(title: "Projects")),
                                 ModalRoute.withName("Projects")
                               );
                             },

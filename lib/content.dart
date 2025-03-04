@@ -30,7 +30,6 @@ class Content{
     _date = dateIn;
     _status = statusIn;
     _coinValue = coinValueIn;
-
   }
 
   String getTitle(){
@@ -92,13 +91,14 @@ class Content{
 
   String toCSV(){
     String out = "";
-    out += "\"content\",,";
-    out += "\"$_title\",,";
-    out += "\"$_parent\",,";
-    out += "\"$_type\",,";
-    out += "\"$_description\",,";
+    out += "content,,";
+    out += "$_title,,";
+    out += "$_parent,,";
+    out += "$_type,,";
+    out += "$_description,,";
     out += (_date.toString().substring(0, 10));
-    out += ",,\"$_status\"";
+    out += ",,$_status,,";
+    out += "$_coinValue";
     return out;
   }
 }

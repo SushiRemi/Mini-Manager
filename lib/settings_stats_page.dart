@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mini_manager/data_manager.dart';
 import 'package:mini_manager/projects_page.dart';
 import 'package:mini_manager/shop_page.dart';
 import 'package:mini_manager/calendar_page.dart';
@@ -14,6 +15,7 @@ class SettingsStatsPage extends StatefulWidget {
 
 class _SettingsStatsPage extends State<SettingsStatsPage> {
   int _counter = 0;
+  DataManager data = DataManager();
 
   void _incrementCounter() {
     setState(() {
@@ -23,6 +25,7 @@ class _SettingsStatsPage extends State<SettingsStatsPage> {
 
   @override
   Widget build(BuildContext context) {
+    data.loadAll();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -45,6 +48,22 @@ class _SettingsStatsPage extends State<SettingsStatsPage> {
                       Text("Test stat"),
                     ],
                   )
+              ),
+
+              FloatingActionButton(
+                  onPressed: (){
+                    data.deleteAll();
+                  },
+                child: const Text("DELETE ALL FILES"),
+              ),
+              FloatingActionButton(
+                onPressed: (){
+                  for (int i=0; i< data.projectList.length; i++){
+                    print(data.projectList[i].toCSV());
+                  }
+
+                },
+                child: const Text("Show All Projects"),
               ),
 
               //Bottom Nav Bar

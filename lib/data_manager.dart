@@ -18,7 +18,6 @@ class DataManager {
   var shopList = <ShopItem>[];
   var stats = Stats(0,0,0,0,0,0,0,0,0,0,0,0); //includes coin amount
 
-
   //_localPath is where we store files on the devices.
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
@@ -40,6 +39,8 @@ class DataManager {
     return File('$path/savedStats.txt');
   }
 
+
+
 //saves the current project, item, and stats to the save file.
   void saveAll(){
     saveProjects();
@@ -52,6 +53,17 @@ class DataManager {
     loadProjects();
     loadShop();
     loadStats();
+  }
+
+  //Refreshes all files
+  Future<void> deleteAll() async {
+    final file1 = await _projectsFile;
+    final file2 = await _statsFile;
+    final file3 = await _itemsFile;
+
+    file1.writeAsStringSync("");
+    file2.writeAsStringSync("");
+    file3.writeAsStringSync("");
   }
 
 
@@ -75,9 +87,9 @@ class DataManager {
     //file.writeAsStringSync("hello");
     //file.writeAsStringSync(" universe!", mode: FileMode.append);
 
-    for(int i=0; i<projectList.length; i++){
-      print(projectList[i].toCSV());
-    }
+    // for(int i=0; i<projectList.length; i++){
+    //   print(projectList[i].toCSV());
+    // }
 
     return file;
   }
@@ -86,27 +98,65 @@ class DataManager {
   Future<int> loadProjects() async {
     try {
       final file = await _projectsFile;
-
+      //print(file.toString());
       // Read the file
       final contents = await file.readAsLines();
-
+      //print(contents.length);
       //Create temp projectList
       var tempList = <Project>[];
 
       // Create Projects/Content for each
+      int projectIndex = 0;
+
       for (int i=0; i<contents.length; i++){
         var current = contents[i].split(',,');
+        //print(i);
+        //print(current);
         if(current[0].contains("project")){
+          projectIndex = i;
+          //print(projectIndex);
+          // print("project found");
           DateTime tempDate = DateTime(int.parse(current[4].substring(0,4)), int.parse(current[4].substring(5,7)), int.parse(current[4].substring(8,10)));
-          tempList.add(Project.create(current[1], current[2], current[3], tempDate, current[6], int.parse(current[7])));
+          // print("dateTime processed");
+          // print(current[1]);
+          // print(current[2]);
+          // print(current[3]);
+          // print(tempDate);
+          // print(current[5]);
+          // print(current[6]);
+          tempList.add(Project.create(current[1], current[2], current[3], tempDate, current[5], int.parse(current[6])));
+          // print("project processed");
         } else if (current[0].contains("content")){
           //add content to latest project
+          //print("content found");
           DateTime tempDate = DateTime(int.parse(current[5].substring(0,4)), int.parse(current[5].substring(5,7)), int.parse(current[5].substring(8,10)));
-          Content newContent = Content.create(current[1], current[2], current[3], current[4], tempDate, current[5], int.parse(current[6]));
+          //print("dateTime processed");
+          // print(current[1]);
+          // print(current[2]);
+          // print(current[3]);
+          // print(current[4]);
+          // print(tempDate);
+          // print(current[6]);
+          // print(current[7]);
+          Content newContent = Content.create(current[1], current[2], current[3], current[4], tempDate, current[6], int.parse(current[7]));
+          // print("content made");
           tempList[tempList.length-1].addContent(newContent);
+          //print(projectIndex);
+          //print ("Content Processed");
+          //print(newContent.toCSV());
         }
+        //print(tempList[i].toCSV());
       }
+      // print("project List complete");
+      // for(int i=0; i<tempList.length; i++){
+      //   print(tempList[i].toCSV());
+      // }
       projectList = tempList;
+
+      // for(int i=0; i<projectList.length; i++){
+      //   print(projectList[i].toCSV());
+      // }
+
       return 0;
     } catch (e) {
       // If encountering an error, return 1

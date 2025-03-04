@@ -81,25 +81,30 @@ class Project{
     DateTime contentDate = _releaseDate;
     for (int i=0; i<postReleaseContent; i++){
       int num = i+1;
-      contentDate.add(Duration(days: daysBetween+1));
+      contentDate = contentDate.add(Duration(days: daysBetween+1));
+      //print(contentDate.toString());
       _contentList.add(Content.create("Post-Release $num", _title, "video", "", contentDate, "in progress", smallCoinValue));
     }
 
     //Creating Main release
     contentDate = _releaseDate;
     _contentList.add(Content.create("Project: $_title - Release Day", _title, "video", "", contentDate, "in progress", largeCoinValue));
+    //print(contentDate.toString());
 
     //Creating the pre-release content
     int daysBack = (daysBetween + 1) * 3 * contentNum;
-    contentDate.subtract(Duration(days: daysBack)); //back at beginning now
+    contentDate = contentDate.subtract(Duration(days: daysBack)); //back at beginning now
     for (int i = 0; i < contentNum; i++){
       int num = i+1;
+      //print(contentDate.toString());
       _contentList.add(Content.create("Main Content $num - Pre-Release 1", _title, "video", "", contentDate, "in progress", smallCoinValue));
-      contentDate.add(Duration(days: daysBetween + 1));
+      contentDate = contentDate.add(Duration(days: daysBetween + 1));
+      //print(contentDate.toString());
       _contentList.add(Content.create("Main Content $num - Pre-Release 2", _title, "video", "", contentDate, "in progress", smallCoinValue));
-      contentDate.add(Duration(days: daysBetween + 1));
+      contentDate = contentDate.add(Duration(days: daysBetween + 1));
+      //print(contentDate.toString());
       _contentList.add(Content.create("Main Content $num - Release Day", _title, "video", "", contentDate, "in progress", mediumCoinValue));
-      contentDate.add(Duration(days: daysBetween + 1));
+      contentDate = contentDate.add(Duration(days: daysBetween + 1));
     }
 
     //Sort content
@@ -176,13 +181,14 @@ class Project{
 
   String toCSV(){
     String out = "";
-    out += "\"project\",,";
-    out += "\"$_title\",,";
-    out += "\"$_type\",,";
-    out += "\"$_description\",,";
+    out += "project,,";
+    out += "$_title,,";
+    out += "$_type,,";
+    out += "$_description,,";
     out += (_releaseDate.toString().substring(0, 10));
     out += ",,";
-    out += "\"$_status\"";
+    out += "$_status,,";
+    out += "$_coinValue";
 
     //handle content
     for (int i=0; i<_contentList.length; i++){

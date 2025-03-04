@@ -60,7 +60,7 @@ class _NewProjectPage extends State<NewProjectPage> {
 
   //save projects to file
   void _save() {
-    data.saveAll();
+    data.saveProjects();
   }
 
   //load projects from file
