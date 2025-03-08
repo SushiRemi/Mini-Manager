@@ -35,6 +35,8 @@ class ProjectsPage extends StatefulWidget {
   final String title;
 
 
+  //DataManager data = DataManager();
+
 
   @override
   State<ProjectsPage> createState() => _ProjectsPage();
@@ -221,6 +223,14 @@ class _ProjectsPage extends State<ProjectsPage> with AfterLayoutMixin<ProjectsPa
     setState(() {
       _projectWidgetList = _updateProjectWidgetList(data.projectList);
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Timer(const Duration(seconds: 1), () => setState(() {
+      _projectWidgetList = _updateProjectWidgetList(data.projectList);
+    }));
   }
 }
 

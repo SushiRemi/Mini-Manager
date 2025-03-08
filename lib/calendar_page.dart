@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mini_manager/projects_page.dart';
 import 'package:mini_manager/settings_stats_page.dart';
@@ -104,6 +106,15 @@ class _CalendarPage extends State<CalendarPage> with AfterLayoutMixin<CalendarPa
       _focusedDay = DateTime.now();
       _contentWidgetList = _updateContentWidgetList(_getEventsForDay(DateTime.now()));
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Timer(const Duration(seconds: 1), () => setState(() {
+      _focusedDay = DateTime.now();
+      _contentWidgetList = _updateContentWidgetList(_getEventsForDay(DateTime.now()));
+    }));
   }
 
   @override

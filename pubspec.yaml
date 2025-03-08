@@ -33,6 +33,7 @@ dependencies:
   go_router:
   table_calendar: ^3.2.0
   expandable_text: ^2.3.0
+  flutter_native_splash: ^2.4.4
   after_layout: ^1.2.0
   flutter:
     sdk: flutter
