@@ -50,7 +50,7 @@ class Project{
     int dayRange = findDayRange(DateTime.now(), _releaseDate);
     bool valid = false;
     while (!valid && daysBetween > 0){
-      if (dayRange > 3*contentNum * (daysBetween+1)){
+      if (dayRange > 3*(contentNum + 1) * (daysBetween+1)){
         valid = true;
       } else {
         daysBetween -= 1;
@@ -83,29 +83,39 @@ class Project{
       int num = i+1;
       contentDate = contentDate.add(Duration(days: daysBetween+1));
       //print(contentDate.toString());
-      _contentList.add(Content.create("Post-Release $num", _title, "video", "", contentDate, "in progress", smallCoinValue));
+      _contentList.add(Content.create("Post-Release $num", _title, "post release", "", contentDate, "in progress", smallCoinValue));
     }
 
     //Creating Main release
     contentDate = _releaseDate;
-    _contentList.add(Content.create("Project: $_title - Release Day", _title, "video", "", contentDate, "in progress", largeCoinValue));
+    _contentList.add(Content.create("Project: $_title - Release Day", _title, "music release", "", contentDate, "in progress", largeCoinValue));
     //print(contentDate.toString());
 
     //Creating the pre-release content
-    int daysBack = (daysBetween + 1) * 3 * contentNum;
+    int daysBack = (daysBetween + 1) * 3 * (contentNum + 1);
     contentDate = contentDate.subtract(Duration(days: daysBack)); //back at beginning now
     for (int i = 0; i < contentNum; i++){
       int num = i+1;
       //print(contentDate.toString());
-      _contentList.add(Content.create("Main Content $num - Pre-Release 1", _title, "video", "", contentDate, "in progress", smallCoinValue));
+      _contentList.add(Content.create("Main Content $num - Pre-Release 1", _title, "teaser", "", contentDate, "in progress", smallCoinValue));
       contentDate = contentDate.add(Duration(days: daysBetween + 1));
       //print(contentDate.toString());
-      _contentList.add(Content.create("Main Content $num - Pre-Release 2", _title, "video", "", contentDate, "in progress", smallCoinValue));
+      _contentList.add(Content.create("Main Content $num - Pre-Release 2", _title, "teaser", "", contentDate, "in progress", smallCoinValue));
       contentDate = contentDate.add(Duration(days: daysBetween + 1));
       //print(contentDate.toString());
       _contentList.add(Content.create("Main Content $num - Release Day", _title, "video", "", contentDate, "in progress", mediumCoinValue));
       contentDate = contentDate.add(Duration(days: daysBetween + 1));
     }
+
+    //Creating pre-main release content
+    _contentList.add(Content.create("Release Day - Pre-Release 1", _title, "teaser", "", contentDate, "in progress", smallCoinValue));
+    contentDate = contentDate.add(Duration(days: daysBetween + 1));
+
+    _contentList.add(Content.create("Release Day - Pre-Release 2", _title, "teaser", "", contentDate, "in progress", smallCoinValue));
+    contentDate = contentDate.add(Duration(days: daysBetween + 1));
+
+    _contentList.add(Content.create("Release Day - Pre-Release 3", _title, "teaser", "", contentDate, "in progress", smallCoinValue));
+    contentDate = contentDate.add(Duration(days: daysBetween + 1));
 
     //Sort content
     sortContentByDate();

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mini_manager/calendar_page.dart';
 import 'package:mini_manager/new_project_page.dart';
+import 'package:mini_manager/project_view_page.dart';
 import 'package:mini_manager/projects_page.dart';
 import 'package:mini_manager/shop_page.dart';
 import 'package:mini_manager/settings_stats_page.dart';
@@ -64,9 +65,9 @@ class _ProjectsPage extends State<ProjectsPage> with AfterLayoutMixin<ProjectsPa
     List<ProjectWidget> newProjectList = [];
     //print(projectList.length);
     for(int i=0; i<projectList.length; i++){
-      newProjectList.add(ProjectWidget(projectList[i]));
+      newProjectList.add(ProjectWidget(projectList[i], i));
     }
-    newProjectList.add(ProjectWidget.test());
+    //newProjectList.add(ProjectWidget.test());
     return newProjectList;
   }
 
@@ -237,20 +238,24 @@ class _ProjectsPage extends State<ProjectsPage> with AfterLayoutMixin<ProjectsPa
 
 // widget for dynamic text field
 class ProjectWidget extends StatelessWidget {
+  Project project = Project.empty();
   String title = "";
   String description = "";
   String status = "";
   String type = "";
   int coinValue = 0;
   DateTime releaseDate = DateTime(2025, 03, 11);
+  int index = -1;
 
-  ProjectWidget(Project project, {super.key}){
-    title = project.getTitle();
-    description = project.getDescription();
-    status = project.getStatus();
-    type = project.getType();
-    coinValue = project.getCoinValue();
-    releaseDate = project.getReleaseDate();
+  ProjectWidget(Project projectIn, int indexIn, {super.key}){
+    project = projectIn;
+    title = projectIn.getTitle();
+    description = projectIn.getDescription();
+    status = projectIn.getStatus();
+    type = projectIn.getType();
+    coinValue = projectIn.getCoinValue();
+    releaseDate = projectIn.getReleaseDate();
+    index = indexIn;
   }
 
   ProjectWidget.empty({super.key}){
@@ -283,10 +288,9 @@ class ProjectWidget extends StatelessWidget {
         child: TextButton(
           onPressed: (){
             //Should change to project viewing page
-            // Navigator.of(context).pushAndRemoveUntil(
-            //     MaterialPageRoute(builder: (context) => ProjectsPage(title: "Projects")),
-            //     ModalRoute.withName("Calendar")
-            // );
+            Navigator.of(context).push<void>(
+                MaterialPageRoute(builder: (context) => ProjectViewPage(title: "Project View", project: project, index: index,)),
+            );
           },
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
