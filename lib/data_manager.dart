@@ -21,25 +21,25 @@ class DataManager {
   //_localPath is where we store files on the devices.
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
-    print("directory found");
+    // print("directory found");
     return directory.path;
   }
 
   Future<File> get _projectsFile async {
     final path = await _localPath;
-    print("project file found");
+    // print("project file found");
     return File('$path/savedProjects.csv');
   }
 
   Future<File> get _itemsFile async {
     final path = await _localPath;
-    print("item file found");
+    // print("item file found");
     return File('$path/savedItems.csv');
   }
 
   Future<File> get _statsFile async {
     final path = await _localPath;
-    print("stats file found");
+    // print("stats file found");
     return File('$path/savedStats.txt');
   }
 
@@ -81,6 +81,10 @@ class DataManager {
 
     sortProjects();
 
+    if (projectList.isEmpty){
+      file.writeAsStringSync("");
+    }
+
     for (int i=0; i < projectList.length; i++){
       if (i==0) {
         file.writeAsStringSync("${projectList[i].toCSV()}\n"); //erases all old data and starts fresh
@@ -105,8 +109,8 @@ class DataManager {
       //print(file.toString());
       // Read the file
       final contents = await file.readAsLines();
-      print("Content length:");
-      print(contents.length);
+      // print("Content length:");
+      // print(contents.length);
       //Create temp projectList
       var tempList = <Project>[];
 

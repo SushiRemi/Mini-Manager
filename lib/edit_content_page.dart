@@ -162,8 +162,8 @@ class _EditContentPage extends State<EditContentPage> {
   //Controller for date field viewer
   final TextEditingController _dateController = TextEditingController();
 
-  //Attempt to create new project
-  void _submitProject(){
+  //Attempt to edit content
+  void _submitContent(){
     print("Title: $pTitle");
     print("Description: $pDescription");
     print("Type: $pType");
@@ -181,6 +181,7 @@ class _EditContentPage extends State<EditContentPage> {
       data.projectList[projectIndex].getContent(contentIndex).setDescription(pDescription);
       data.projectList[projectIndex].getContent(contentIndex).setType(pType);
       data.projectList[projectIndex].getContent(contentIndex).setDate(pReleaseDate);
+      data.projectList[projectIndex].sortContentByDate();
       data.sortProjects();
       data.updateStats();
       _save();
@@ -194,6 +195,16 @@ class _EditContentPage extends State<EditContentPage> {
     } else {
       print("INVALID");
     }
+  }
+
+  //Delete the current project
+  void _deleteContent(){
+    print("Content Deleted");
+    print(data.projectList[projectIndex].toCSV());
+    data.projectList[projectIndex].removeContent(contentIndex);
+    data.projectList[projectIndex].sortContentByDate();
+    data.projectList[projectIndex].updateCoinValue();
+    data.saveAll();
   }
 
   @override
@@ -409,12 +420,48 @@ class _EditContentPage extends State<EditContentPage> {
                     ))
                 ),
                 onPressed: (){
-                  _submitProject();
+                  _submitContent();
                 },
                 child: const Text(
                   "Save Edits",
                 ),
               ),
+              //Delete Button
+              TextButton(
+                style: const ButtonStyle(
+                    textStyle: WidgetStatePropertyAll<TextStyle>(TextStyle(
+                      fontSize: 33,
+                      color: Colors.purple,
+                    ))
+                ),
+                onPressed:
+                    () => showDialog<String>(
+                  context: context,
+                  builder:
+                      (BuildContext context) => AlertDialog(
+                    title: const Text('Delete Project?'),
+                    content: const Text('This will completely delete the project and all related content. Your coin amount and streak will not be affected.'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'Cancel'),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          _deleteContent();
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(builder: (context) => const ProjectsPage(title: "Projects")),
+                              ModalRoute.withName("Projects")
+                          );
+                        },
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ),
+                ),
+                child: const Text('Delete Project'),
+              ),
+
             ],
           )
       ),

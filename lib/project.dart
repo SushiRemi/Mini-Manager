@@ -230,5 +230,12 @@ class Project{
     to = DateTime(to.year, to.month, to.day);
     return (to.difference(from).inHours / 24).round();
   }
+
+  void updateCoinValue(){
+    _coinValue = 0;
+    for(int i=0; i<_contentList.length; i++){
+      _coinValue += _contentList[i].getCoinValue();
+    }
+  }
 }
 

@@ -161,6 +161,16 @@ class _EditProjectPage extends State<EditProjectPage> {
     }
   }
 
+  //Delete the current project
+  void _deleteProject(){
+    // print("Project Deleted");
+    // print("Project Index: $projectIndex");
+    // print(data.projectList[projectIndex].toCSV());
+    data.projectList.removeAt(projectIndex);
+    // print(data.projectList.length);
+    data.saveAll();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -380,7 +390,43 @@ class _EditProjectPage extends State<EditProjectPage> {
                   "Save Edits",
                 ),
               ),
-            ],
+              //Delete Button
+              TextButton(
+                style: const ButtonStyle(
+                    textStyle: WidgetStatePropertyAll<TextStyle>(TextStyle(
+                      fontSize: 33,
+                      color: Colors.purple,
+                    ))
+                ),
+                onPressed:
+                    () => showDialog<String>(
+                  context: context,
+                  builder:
+                      (BuildContext context) => AlertDialog(
+                    title: const Text('Delete Project?'),
+                    content: const Text('This will completely delete the project and all related content. Your coin amount and streak will not be affected.'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'Cancel'),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          _deleteProject();
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(builder: (context) => const ProjectsPage(title: "Projects")),
+                              ModalRoute.withName("Projects")
+                          );
+                        },
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ),
+                ),
+                child: const Text('Delete Project'),
+              ),
+
+        ],
           )
       ),
     );
