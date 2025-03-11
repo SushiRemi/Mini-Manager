@@ -51,13 +51,13 @@ class Stats{
     contentCreated = contentCreatedIn;
     contentCompleted = contentCreatedIn;
     contentFailed = contentFailedIn;
-    coinMultiplier = calculateMultiplier(contentStreakIn);
+    updateMultiplier();
   }
 
-  calculateMultiplier(int streak){
+  void updateMultiplier(){
     //increase mult by 0.1 per 3, max of 3
-    double mult = 0.1 * streak;
-    return min(mult, 3.0);
+    double mult = (0.1 * contentStreak) + 1;
+    coinMultiplier = min(mult, 3.0);
   }
 
   String toCSV(){

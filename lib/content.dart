@@ -30,6 +30,13 @@ class Content{
     _date = dateIn;
     _status = statusIn;
     _coinValue = coinValueIn;
+    DateTime now = DateTime.now();
+    DateTime today = DateTime(now.year, now.month, now.day);
+    if(dateIn.compareTo(today) < 0){
+      if(_status.contains("In Progress")){
+        _status = "Incomplete";
+      }
+    }
   }
 
   String getTitle(){

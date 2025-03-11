@@ -1,4 +1,6 @@
 //connecting to other pages
+import 'dart:math';
+
 import 'package:mini_manager/project.dart';
 import 'package:mini_manager/shopitem.dart';
 import 'package:mini_manager/content.dart';
@@ -150,6 +152,10 @@ class DataManager {
           // print(current[6]);
           // print(current[7]);
           Content newContent = Content.create(current[1], current[2], current[3], current[4], tempDate, current[6], int.parse(current[7]));
+          //Resets content streak if there is any incomplete content.
+          if(newContent.getStatus().contains("Incomplete")){
+            stats.contentStreak = 0;
+          }
           // print("content made");
           tempList[tempList.length-1].addContent(newContent);
           //print(projectIndex);
@@ -255,7 +261,36 @@ class DataManager {
 
   }
 
+  //Update Stats
   void updateStats(){
 
   }
+
+  //Earn Coins
+  void earnCoins(int amount){
+    stats.coins += (amount*stats.coinMultiplier).toInt();
+    stats.coinsEarned += amount;
+  }
+
+  //Spend Coins
+  void spendCoins(int amount){
+    stats.coins -= amount;
+    stats.coinsSpent += amount;
+  }
+
+  //Complete Content
+  void completeContent(){
+    stats.contentCompleted += 1;
+    stats.contentStreak += 1;
+    stats.longestStreak = max(stats.contentStreak, stats.longestStreak);
+    stats.updateMultiplier();
+  }
+
+  //Cancel Content
+  void cancelContent(){
+    stats.contentFailed += 1;
+    stats.contentStreak = 0;
+    stats.updateMultiplier();
+  }
+
 }

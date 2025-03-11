@@ -347,11 +347,12 @@ class DynamicWidget extends StatelessWidget {
       //width: 100,
       child: TextButton(
           onPressed: (){
-            //Should change to content viewing page, currently to project for testing
-            //print("Content Index: $contentIndex");
-            Navigator.of(context).push<void>(
-              MaterialPageRoute(builder: (context) => ContentStatusPage(title: "Content Status", content: content, parentIndex: parentIndex, contentIndex: contentIndex)),
-            );
+            //Can only access if it is marked as In Progress or Incomplete
+            if(status.contains("Incomplete") || status.contains("In Progress")){
+              Navigator.of(context).push<void>(
+                MaterialPageRoute(builder: (context) => ContentStatusPage(title: "Content Status", content: content, parentIndex: parentIndex, contentIndex: contentIndex)),
+              );
+            }
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

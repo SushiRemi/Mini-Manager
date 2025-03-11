@@ -117,52 +117,125 @@ class _ContentStatusPage extends State<ContentStatusPage> {
 
               ],
             ),
-            TextButton(
-              style: const ButtonStyle(
-                  textStyle: WidgetStatePropertyAll<TextStyle>(TextStyle(
-                    fontSize: 33,
-                    color: Colors.purple,
-                  ))
+            Text(
+              ("Current Coin Multiplier: " + data.stats.coinMultiplier.toString() + "x"),
+              style: const TextStyle(
+                fontSize: 20,
+                color: Colors.black,
               ),
-              onPressed:
-                  () => showDialog<String>(
-                context: context,
-                builder:
-                    (BuildContext context) => AlertDialog(
-                  title: const Text('Complete Content?'),
-                  content: const Text('This will mark the content as complete and give you the marked amount of coins, if completed on time or early. This action can not be undone.'),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, 'Cancel'),
-                      child: const Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        //Set content as complete
-                        print("Project Index: $parentIndex");
-                        print("Content Index: $contentIndex");
-                        data.projectList[parentIndex].getContent(contentIndex).setStatus("Completed");
-
-                        //Add coins to stats
-                        //data.stats.addCoins(coinValue);
-
-                        //Check if project is complete in load function
-                        //Save data
-                        data.saveAll();
-
-                        //Return to Calendar Page
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) => const CalendarPage(title: "Calendar")),
-                            ModalRoute.withName("Projects")
-                        );
-                      },
-                      child: const Text('OK'),
-                    ),
-                  ],
-                ),
-              ),
-              child: const Text('Complete'),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                //Complete Content Button
+                TextButton(
+                  style: const ButtonStyle(
+                      textStyle: WidgetStatePropertyAll<TextStyle>(TextStyle(
+                        fontSize: 33,
+                        color: Colors.purple,
+                      ))
+                  ),
+                  onPressed:
+                      () => showDialog<String>(
+                    context: context,
+                    builder:
+                        (BuildContext context) => AlertDialog(
+                      title: const Text('Complete Content?'),
+                      content: const Text('This will mark the content as complete and give you the marked amount of coins. If completed on time or early, your coin multiplier will increase. If late, you will still earn coins but your multiplier will be reset. This action can not be undone.'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            //Set content as complete
+                            print("Project Index: $parentIndex");
+                            print("Content Index: $contentIndex");
+                            data.projectList[parentIndex].getContent(contentIndex).setStatus("Completed");
+
+                            //Add coins to stats
+                            data.earnCoins(coinValue);
+                            data.completeContent();
+
+                            DateTime now = DateTime.now();
+                            DateTime today = DateTime(now.year, now.month, now.day);
+                            if(releaseDate.compareTo(today) < 0){
+                              data.stats.contentStreak = 0;
+                            }
+
+                            //Check if project is complete in load function
+                            //Save data
+                            data.saveAll();
+                            print(data.stats.coins);
+
+                            //Return to Calendar Page
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(builder: (context) => const CalendarPage(title: "Calendar")),
+                                ModalRoute.withName("Projects")
+                            );
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  ),
+                  child: const Text('Complete'),
+                ),
+
+                //Cancel Content Button
+                TextButton(
+                  style: const ButtonStyle(
+                      textStyle: WidgetStatePropertyAll<TextStyle>(TextStyle(
+                        fontSize: 33,
+                        color: Colors.purple,
+                      ))
+                  ),
+                  onPressed:
+                      () => showDialog<String>(
+                    context: context,
+                    builder:
+                        (BuildContext context) => AlertDialog(
+                      title: const Text('Cancel Content?'),
+                      content: const Text('This will mark the content as cancelled, and you will lose your coin multiplier. This action can not be undone.'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            //Set content as complete
+                            print("Project Index: $parentIndex");
+                            print("Content Index: $contentIndex");
+                            data.projectList[parentIndex].getContent(contentIndex).setStatus("Cancelled");
+
+                            //Add coins to stats
+                            //data.earnCoins(coinValue);
+                            data.cancelContent();
+
+                            //Check if project is complete in load function
+                            //Save data
+                            data.saveAll();
+                            print(data.stats.coins);
+                            print(data.stats.coinMultiplier);
+
+                            //Return to Calendar Page
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(builder: (context) => const CalendarPage(title: "Calendar")),
+                                ModalRoute.withName("Projects")
+                            );
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  ),
+                  child: const Text('Cancel'),
+                ),
+              ],
+            ),
+
 
           ],
         ),
