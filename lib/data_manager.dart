@@ -86,6 +86,8 @@ class DataManager {
     }
 
     for (int i=0; i < projectList.length; i++){
+      projectList[i].updateCompletion();
+
       if (i==0) {
         file.writeAsStringSync("${projectList[i].toCSV()}\n"); //erases all old data and starts fresh
       } else {

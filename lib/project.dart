@@ -33,10 +33,10 @@ class Project{
 
   Project.createNew(String titleIn, String typeIn, String descriptionIn, DateTime releaseDateIn, int mainContentIn){
     _title = titleIn;
-    _type = typeIn.toLowerCase();
+    _type = typeIn;
     _description = descriptionIn;
     _releaseDate = releaseDateIn;
-    _status = "in progress";
+    _status = "In Progress";
     _coinValue = 0;
     int contentNum = mainContentIn;
     int daysBetween = 3;
@@ -59,8 +59,9 @@ class Project{
 
     //initialize contentList with the content needed based on contentNum, _releaseDate, and _daysBetween
     //Creating the post-release content
+    String typeLower = _type.toLowerCase();
     int postReleaseContent = 0;
-    switch (_type){
+    switch (typeLower){
       case "album":
         postReleaseContent = 4;
         break;
@@ -83,12 +84,12 @@ class Project{
       int num = i+1;
       contentDate = contentDate.add(Duration(days: daysBetween+1));
       //print(contentDate.toString());
-      _contentList.add(Content.create("Post-Release $num", _title, "post release", "", contentDate, "in progress", smallCoinValue));
+      _contentList.add(Content.create("Post-Release $num", _title, "Post Release", "", contentDate, "In Progress", smallCoinValue));
     }
 
     //Creating Main release
     contentDate = _releaseDate;
-    _contentList.add(Content.create("Project: $_title - Release Day", _title, "music release", "", contentDate, "in progress", largeCoinValue));
+    _contentList.add(Content.create("Project: $_title - Release Day", _title, "Music Release", "", contentDate, "In Progress", largeCoinValue));
     //print(contentDate.toString());
 
     //Creating the pre-release content
@@ -97,24 +98,24 @@ class Project{
     for (int i = 0; i < contentNum; i++){
       int num = i+1;
       //print(contentDate.toString());
-      _contentList.add(Content.create("Main Content $num - Pre-Release 1", _title, "teaser", "", contentDate, "in progress", smallCoinValue));
+      _contentList.add(Content.create("Main Content $num - Pre-Release 1", _title, "Teaser", "", contentDate, "In Progress", smallCoinValue));
       contentDate = contentDate.add(Duration(days: daysBetween + 1));
       //print(contentDate.toString());
-      _contentList.add(Content.create("Main Content $num - Pre-Release 2", _title, "teaser", "", contentDate, "in progress", smallCoinValue));
+      _contentList.add(Content.create("Main Content $num - Pre-Release 2", _title, "Teaser", "", contentDate, "In Progress", smallCoinValue));
       contentDate = contentDate.add(Duration(days: daysBetween + 1));
       //print(contentDate.toString());
-      _contentList.add(Content.create("Main Content $num - Release Day", _title, "video", "", contentDate, "in progress", mediumCoinValue));
+      _contentList.add(Content.create("Main Content $num - Release Day", _title, "Video", "", contentDate, "In Progress", mediumCoinValue));
       contentDate = contentDate.add(Duration(days: daysBetween + 1));
     }
 
     //Creating pre-main release content
-    _contentList.add(Content.create("Release Day - Pre-Release 1", _title, "teaser", "", contentDate, "in progress", smallCoinValue));
+    _contentList.add(Content.create("Release Day - Pre-Release 1", _title, "Teaser", "", contentDate, "In Progress", smallCoinValue));
     contentDate = contentDate.add(Duration(days: daysBetween + 1));
 
-    _contentList.add(Content.create("Release Day - Pre-Release 2", _title, "teaser", "", contentDate, "in progress", smallCoinValue));
+    _contentList.add(Content.create("Release Day - Pre-Release 2", _title, "Teaser", "", contentDate, "In Progress", smallCoinValue));
     contentDate = contentDate.add(Duration(days: daysBetween + 1));
 
-    _contentList.add(Content.create("Release Day - Pre-Release 3", _title, "teaser", "", contentDate, "in progress", smallCoinValue));
+    _contentList.add(Content.create("Release Day - Pre-Release 3", _title, "Teaser", "", contentDate, "In Progress", smallCoinValue));
     contentDate = contentDate.add(Duration(days: daysBetween + 1));
 
     //Sort content
@@ -235,6 +236,22 @@ class Project{
     _coinValue = 0;
     for(int i=0; i<_contentList.length; i++){
       _coinValue += _contentList[i].getCoinValue();
+    }
+  }
+
+  void updateCompletion(){
+    bool projectComplete = true;
+    int i = 0;
+    while (i < _contentList.length && projectComplete){
+      if (_contentList[i].getStatus().toLowerCase().contains("in progress")){
+        projectComplete = false;
+      }
+      i++;
+    }
+    if (projectComplete == true){
+      _status = "Completed";
+    } else {
+      _status = "In Progress";
     }
   }
 }

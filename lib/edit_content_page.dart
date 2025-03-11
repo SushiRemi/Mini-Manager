@@ -28,16 +28,16 @@ typedef TypeEntry = DropdownMenuEntry<TypeLabel>;
 
 enum TypeLabel {
   //select('Select', "select"),
-  video('Video', "video"),
-  imagePost('Image Post', "image post"),
-  textPost('Text Post', "text post"),
-  musicVideo('Music Video', "music video"),
-  musicRelease('Music Release', "music release"),
-  shortVideo('Short Video', "short video"),
-  livestream('Livestream', "livestream"),
-  teaser('Teaser', "teaser"),
-  postRelease('Post Release', "post release"),
-  other('Other', "other"),
+  video('Video', "Video"),
+  imagePost('Image Post', "Image Post"),
+  textPost('Text Post', "Text Post"),
+  musicVideo('Music Video', "Music Video"),
+  musicRelease('Music Release', "Music Release"),
+  shortVideo('Short Video', "Short Video"),
+  livestream('Livestream', "Livestream"),
+  teaser('Teaser', "Teaser"),
+  postRelease('Post Release', "Post Release"),
+  other('Other', "Other"),
 
   // album('Album', "album"),
   // ep('EP', "ep"),
@@ -70,7 +70,7 @@ class _EditContentPage extends State<EditContentPage> {
   //for project creation
   String pTitle = "";
   String pDescription = "";
-  String pType = "album";
+  String pType = "Album";
   // int pMainContentAmount = -1;
   DateTime pReleaseDate = DateTime(0);
   TypeLabel pTypeLabel = TypeLabel.other;

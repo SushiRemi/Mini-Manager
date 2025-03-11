@@ -7,14 +7,15 @@ import 'package:mini_manager/project.dart';
 import 'package:mini_manager/data_manager.dart';
 
 class ContentStatusPage extends StatefulWidget {
-  const ContentStatusPage({super.key, required this.title, required this.content, required this.parentIndex});
+  const ContentStatusPage({super.key, required this.title, required this.content, required this.parentIndex, required this.contentIndex});
 
   final String title;
   final Content content;
   final int parentIndex;
+  final int contentIndex;
 
   @override
-  State<ContentStatusPage> createState() => _ContentStatusPage(content, parentIndex);
+  State<ContentStatusPage> createState() => _ContentStatusPage(content, parentIndex, contentIndex);
 }
 
 class _ContentStatusPage extends State<ContentStatusPage> {
@@ -30,12 +31,14 @@ class _ContentStatusPage extends State<ContentStatusPage> {
   int coinValue = 0;
   String description = "";
   int parentIndex = -1;
+  int contentIndex = -1;
   DateTime releaseDate = DateTime(0,0,0);
   String releaseDateString = "";
 
-  _ContentStatusPage(Content contentIn, int parentIndexIn){
+  _ContentStatusPage(Content contentIn, int parentIndexIn, int contextIndexIn){
     data.loadAll();
     parentIndex = parentIndexIn;
+    contentIndex = contextIndexIn;
     content = contentIn;
     title = content.getTitle();
     parentTitle = content.getParent();
@@ -111,43 +114,56 @@ class _ContentStatusPage extends State<ContentStatusPage> {
                     color: Colors.black,
                   ),
                 ),
-                TextButton(
-                  style: const ButtonStyle(
-                      textStyle: WidgetStatePropertyAll<TextStyle>(TextStyle(
-                        fontSize: 33,
-                        color: Colors.purple,
-                      ))
-                  ),
-                  onPressed:
-                      () => showDialog<String>(
-                    context: context,
-                    builder:
-                        (BuildContext context) => AlertDialog(
-                      title: const Text('Delete Project?'),
-                      content: const Text('This will completely delete the project and all related content. Your coin amount and streak will not be affected.'),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, 'Cancel'),
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            //_deleteContent();
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(builder: (context) => const CalendarPage(title: "Calendar")),
-                                ModalRoute.withName("Projects")
-                            );
-                          },
-                          child: const Text('OK'),
-                        ),
-                      ],
-                    ),
-                  ),
-                  child: const Text('Delete Project'),
-                ),
 
               ],
-            )
+            ),
+            TextButton(
+              style: const ButtonStyle(
+                  textStyle: WidgetStatePropertyAll<TextStyle>(TextStyle(
+                    fontSize: 33,
+                    color: Colors.purple,
+                  ))
+              ),
+              onPressed:
+                  () => showDialog<String>(
+                context: context,
+                builder:
+                    (BuildContext context) => AlertDialog(
+                  title: const Text('Complete Content?'),
+                  content: const Text('This will mark the content as complete and give you the marked amount of coins, if completed on time or early. This action can not be undone.'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Cancel'),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        //Set content as complete
+                        print("Project Index: $parentIndex");
+                        print("Content Index: $contentIndex");
+                        data.projectList[parentIndex].getContent(contentIndex).setStatus("Completed");
+
+                        //Add coins to stats
+                        //data.stats.addCoins(coinValue);
+
+                        //Check if project is complete in load function
+                        //Save data
+                        data.saveAll();
+
+                        //Return to Calendar Page
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (context) => const CalendarPage(title: "Calendar")),
+                            ModalRoute.withName("Projects")
+                        );
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                ),
+              ),
+              child: const Text('Complete'),
+            ),
+
           ],
         ),
       ),

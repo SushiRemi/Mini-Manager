@@ -53,6 +53,7 @@ class _CalendarPage extends State<CalendarPage> with AfterLayoutMixin<CalendarPa
   //For dynamically displaying events
   List<DynamicWidget> _contentWidgetList = [];
   List<int> indexList = [];
+  List<int> contentIndexList = [];
 
   void _save() {
     data.saveProjects();
@@ -67,6 +68,8 @@ class _CalendarPage extends State<CalendarPage> with AfterLayoutMixin<CalendarPa
   List<Content> _getEventsForDay(DateTime day){
     //return content list for that day
     List<Content> contentList = [];
+    indexList.clear();
+    contentIndexList.clear();
     //print(day);
     for(int i=0; i<data.projectList.length; i++){
       //checks if day is within project range
@@ -81,6 +84,8 @@ class _CalendarPage extends State<CalendarPage> with AfterLayoutMixin<CalendarPa
           //print("CONTENT FOUND");
           contentList.add(currentProject.getContentList()[j]);
           indexList.add(i);
+          contentIndexList.add(j);
+          //print("Content Index: $j");
         }
       }
     }
@@ -90,8 +95,9 @@ class _CalendarPage extends State<CalendarPage> with AfterLayoutMixin<CalendarPa
 
   List<DynamicWidget> _updateContentWidgetList(List<Content> contentList){
     List<DynamicWidget> newContentList = [];
+    //print(contentIndexList.toString());
     for(int i=0; i<contentList.length; i++){
-      newContentList.add(DynamicWidget(contentList[i], indexList[i]));
+      newContentList.add(DynamicWidget(contentList[i], indexList[i], contentIndexList[i]));
     }
     //newContentList.add(DynamicWidget.test(_selectedDay));
     return newContentList;
@@ -300,8 +306,9 @@ class DynamicWidget extends StatelessWidget {
   int coinValue = 0;
   Content content = Content.empty();
   int parentIndex = -1;
+  int contentIndex = -1;
 
-  DynamicWidget(Content contentIn, int parentIndexIn, {super.key}){
+  DynamicWidget(Content contentIn, int parentIndexIn, int contentIndexIn, {super.key}){
     content = contentIn;
     title = content.getTitle();
     parent = content.getParent();
@@ -310,6 +317,7 @@ class DynamicWidget extends StatelessWidget {
     type = content.getType();
     coinValue = content.getCoinValue();
     parentIndex = parentIndexIn;
+    contentIndex = contentIndexIn;
   }
 
   DynamicWidget.empty({super.key}){
@@ -340,8 +348,9 @@ class DynamicWidget extends StatelessWidget {
       child: TextButton(
           onPressed: (){
             //Should change to content viewing page, currently to project for testing
+            //print("Content Index: $contentIndex");
             Navigator.of(context).push<void>(
-              MaterialPageRoute(builder: (context) => ContentStatusPage(title: "Content Status", content: content, parentIndex: parentIndex,)),
+              MaterialPageRoute(builder: (context) => ContentStatusPage(title: "Content Status", content: content, parentIndex: parentIndex, contentIndex: contentIndex)),
             );
           },
           child: Column(

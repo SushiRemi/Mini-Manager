@@ -26,10 +26,10 @@ typedef TypeEntry = DropdownMenuEntry<TypeLabel>;
 
 enum TypeLabel {
   //select('Select', "select"),
-  album('Album', "album"),
-  ep('EP', "ep"),
-  single('Single', "single"),
-  other('Other', "other"),;
+  album('Album', "Album"),
+  ep('EP', "EP"),
+  single('Single', "Single"),
+  other('Other', "Other"),;
 
   const TypeLabel(this.label, this.value);
   final String label;
@@ -55,7 +55,7 @@ class _EditProjectPage extends State<EditProjectPage> {
   //for project creation
   String pTitle = "";
   String pDescription = "";
-  String pType = "album";
+  String pType = "Album";
   // int pMainContentAmount = -1;
   DateTime pReleaseDate = DateTime(0);
   TypeLabel pTypeLabel = TypeLabel.other;
