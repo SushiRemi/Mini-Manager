@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mini_manager/content_status_page.dart';
 import 'package:mini_manager/projects_page.dart';
 import 'package:mini_manager/settings_stats_page.dart';
 import 'package:mini_manager/shop_page.dart';
@@ -51,6 +52,7 @@ class _CalendarPage extends State<CalendarPage> with AfterLayoutMixin<CalendarPa
 
   //For dynamically displaying events
   List<DynamicWidget> _contentWidgetList = [];
+  List<int> indexList = [];
 
   void _save() {
     data.saveProjects();
@@ -78,6 +80,7 @@ class _CalendarPage extends State<CalendarPage> with AfterLayoutMixin<CalendarPa
         if (date.year == day.year && date.month == day.month && date.day == day.day){
           //print("CONTENT FOUND");
           contentList.add(currentProject.getContentList()[j]);
+          indexList.add(i);
         }
       }
     }
@@ -88,7 +91,7 @@ class _CalendarPage extends State<CalendarPage> with AfterLayoutMixin<CalendarPa
   List<DynamicWidget> _updateContentWidgetList(List<Content> contentList){
     List<DynamicWidget> newContentList = [];
     for(int i=0; i<contentList.length; i++){
-      newContentList.add(DynamicWidget(contentList[i]));
+      newContentList.add(DynamicWidget(contentList[i], indexList[i]));
     }
     //newContentList.add(DynamicWidget.test(_selectedDay));
     return newContentList;
@@ -295,14 +298,18 @@ class DynamicWidget extends StatelessWidget {
   String status = "";
   String type = "";
   int coinValue = 0;
+  Content content = Content.empty();
+  int parentIndex = -1;
 
-  DynamicWidget(Content content, {super.key}){
+  DynamicWidget(Content contentIn, int parentIndexIn, {super.key}){
+    content = contentIn;
     title = content.getTitle();
     parent = content.getParent();
     description = content.getDescription();
     status = content.getStatus();
     type = content.getType();
     coinValue = content.getCoinValue();
+    parentIndex = parentIndexIn;
   }
 
   DynamicWidget.empty({super.key}){
@@ -333,10 +340,9 @@ class DynamicWidget extends StatelessWidget {
       child: TextButton(
           onPressed: (){
             //Should change to content viewing page, currently to project for testing
-            // Navigator.of(context).pushAndRemoveUntil(
-            //     MaterialPageRoute(builder: (context) => ProjectsPage(title: "Projects")),
-            //     ModalRoute.withName("Calendar")
-            // );
+            Navigator.of(context).push<void>(
+              MaterialPageRoute(builder: (context) => ContentStatusPage(title: "Content Status", content: content, parentIndex: parentIndex,)),
+            );
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
