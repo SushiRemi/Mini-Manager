@@ -11,15 +11,15 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'dart:async';
 
-
 //used for swiping between pages
 import 'package:go_router/go_router.dart';
 import 'package:swipeable_page_route/swipeable_page_route.dart';
 import 'go_router.dart';
 
 
-
-
+//Imports for firebase/fireflutter
+import 'package:firebase_core/firebase_core.dart';
+// import 'firebase_options.dart';
 
 void main() {
   //Main method. starts the app globally, don't need for every page.

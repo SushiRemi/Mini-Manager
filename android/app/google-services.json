@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "206217971615",
+    "project_id": "mini-mana-2d07c",
+    "storage_bucket": "mini-mana-2d07c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:206217971615:android:6618781332d1ccb1925faa",
+        "android_client_info": {
+          "package_name": "com.Remskii.mini_manager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3K0M3cSoQWdEzIDAd0IuXNAw85cZxwHo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
