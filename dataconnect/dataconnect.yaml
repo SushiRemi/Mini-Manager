@@ -1,6 +1,6 @@
 specVersion: "v1beta"
-serviceId: "mini-manager"
-location: "us-central1"
+serviceId: "Mini-Manager"
+location: "us-west1"
 schema:
   source: "./schema"
   datasource:

@@ -12,9 +12,9 @@ class DefaultConnector {
   
 
   static ConnectorConfig connectorConfig = ConnectorConfig(
-    'us-central1',
+    'us-west1',
     'default',
-    'mini-manager',
+    'Mini-Manager',
   );
 
   DefaultConnector({required this.dataConnect});

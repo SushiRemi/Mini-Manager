@@ -19,10 +19,20 @@ import 'go_router.dart';
 
 //Imports for firebase/fireflutter
 import 'package:firebase_core/firebase_core.dart';
-// import 'firebase_options.dart';
+import 'firebase_options.dart';
 
-void main() {
+
+
+
+Future<void> main() async {
   //Main method. starts the app globally, don't need for every page.
+
+  //Initialize Firebase
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
