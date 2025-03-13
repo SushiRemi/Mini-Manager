@@ -5,6 +5,7 @@ import 'package:mini_manager/project.dart';
 import 'package:mini_manager/shopitem.dart';
 import 'data_manager.dart';
 import 'package:mini_manager/data_manager.dart';
+import 'package:mini_manager/authpage.dart';
 
 //imports for saving/loading files
 import 'package:path_provider/path_provider.dart';
@@ -20,6 +21,7 @@ import 'go_router.dart';
 //Imports for firebase/fireflutter
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 
 
@@ -32,6 +34,16 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // FirebaseAuth.instance
+  //     .userChanges()
+  //     .listen((User? user) {
+  //   if (user == null) {
+  //     print('User is currently signed out!');
+  //   } else {
+  //     print('User is signed in!');
+  //   }
+  // });
 
   runApp(const MyApp());
 }
@@ -105,7 +117,9 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
     Timer(const Duration(seconds: 3),
-            ()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CalendarPage(title: "Calendar"))
+            // ()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CalendarPage(title: "Calendar"))
+            ()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AuthPage(title: "Authentication"))
+
         )
     );
   }

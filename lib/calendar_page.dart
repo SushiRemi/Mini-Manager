@@ -23,6 +23,10 @@ import 'package:swipeable_page_route/swipeable_page_route.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'go_router.dart';
 
+//used for firebase data access
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 enum NavigationMode{
   navigator,
   goRouter,
@@ -120,6 +124,7 @@ class _CalendarPage extends State<CalendarPage> with AfterLayoutMixin<CalendarPa
   @override
   void initState() {
     super.initState();
+    print(FirebaseAuth.instance.currentUser!.email.toString());
     Timer(const Duration(seconds: 1), () => setState(() {
       _focusedDay = DateTime.now();
       _contentWidgetList = _updateContentWidgetList(_getEventsForDay(DateTime.now()));
