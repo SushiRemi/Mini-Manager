@@ -1,6 +1,7 @@
 //connecting to other pages
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mini_manager/project.dart';
 import 'package:mini_manager/shopitem.dart';
 import 'package:mini_manager/content.dart';
@@ -11,6 +12,11 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'dart:async';
 
+//imports for saving/loading from firebase
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
+
 class DataManager {
   //Initialize DataManager
   DataManager();
@@ -19,6 +25,10 @@ class DataManager {
   var projectList = <Project>[];
   var shopList = <ShopItem>[];
   var stats = Stats(0,0,0,0,0,0,0,0,0,0,0,0); //includes coin amount
+
+  //Setup firebase storage
+  final storageRef = FirebaseStorage.instance;
+
 
   //_localPath is where we store files on the devices.
   Future<String> get _localPath async {
@@ -291,6 +301,73 @@ class DataManager {
     stats.contentFailed += 1;
     stats.contentStreak = 0;
     stats.updateMultiplier();
+  }
+
+  //Save to flutter database
+  Future<void> saveToFirebase() async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+
+    File projectsFileIn = await _projectsFile;
+    File itemsFileIn = await _itemsFile;
+    File statsFileIn = await _statsFile;
+
+    // Location to save file to
+    String projectsLocation = "userdata/" + uid + "/" + "savedProjects.csv";
+    String itemsLocation = "userdata/" + uid + "/" + "savedItems.csv";
+    String statsLocation = "userdata/" + uid + "/" + "savedStats.txt";
+
+    print("Project Location: " + projectsLocation);
+    print("Item Location: " + itemsLocation);
+    print("Stat Location: " + statsLocation);
+
+    // Create a storage reference from our app
+    final projectsRef = storageRef.ref(projectsLocation);
+    final itemsRef = storageRef.ref(itemsLocation);
+    final statsRef = storageRef.ref(statsLocation);
+
+    try {
+      await projectsRef.putFile(projectsFileIn);
+      await itemsRef.putFile(itemsFileIn);
+      await statsRef.putFile(statsFileIn);
+    } catch (e){
+      print("Error in saving to cloud.");
+      print(e.toString());
+    }
+  }
+
+  //Load from firebase database
+  Future<void> loadFromFirebase() async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+
+    File projectsFileIn = await _projectsFile;
+    File itemsFileIn = await _itemsFile;
+    File statsFileIn = await _statsFile;
+
+    // Location to load files from
+    String projectsLocation = "userdata/" + uid + "/" + "savedProjects.csv";
+    String itemsLocation = "userdata/" + uid + "/" + "savedItems.csv";
+    String statsLocation = "userdata/" + uid + "/" + "savedStats.txt";
+
+    // Create a storage reference from our app
+    final projectsRef = storageRef.ref(projectsLocation);
+    final itemsRef = storageRef.ref(itemsLocation);
+    final statsRef = storageRef.ref(statsLocation);
+
+    try {
+      await projectsRef.writeToFile(projectsFileIn);
+      await itemsRef.writeToFile(itemsFileIn);
+      await statsRef.writeToFile(statsFileIn);
+
+      //_projectsFile = projectsFileIn as Future<File>;
+
+      //note for future me: you need to modify the load function to be able to take non-future files as well
+    } catch (e){
+      print("Error in loading from cloud.");
+      print(e.toString());
+    }
+
+
+    loadAll();
   }
 
 }

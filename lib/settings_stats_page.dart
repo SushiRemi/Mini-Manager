@@ -23,6 +23,11 @@ class _SettingsStatsPage extends State<SettingsStatsPage> {
     });
   }
 
+  void initState(){
+    super.initState();
+    data.loadAll();
+  }
+
   @override
   Widget build(BuildContext context) {
     data.loadAll();
@@ -64,6 +69,18 @@ class _SettingsStatsPage extends State<SettingsStatsPage> {
 
                 },
                 child: const Text("Show All Projects"),
+              ),
+              FloatingActionButton(
+                onPressed: (){
+                  data.saveToFirebase();
+                },
+                child: const Text("Save to firebase"),
+              ),
+              FloatingActionButton(
+                onPressed: (){
+                  data.loadFromFirebase();
+                },
+                child: const Text("Load from firebase"),
               ),
 
               //Bottom Nav Bar
