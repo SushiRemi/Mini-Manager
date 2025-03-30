@@ -361,6 +361,7 @@ class DataManager {
       //_projectsFile = projectsFileIn as Future<File>;
 
       //note for future me: you need to modify the load function to be able to take non-future files as well
+      //note for future me: take a break, bitch
     } catch (e){
       print("Error in loading from cloud.");
       print(e.toString());
