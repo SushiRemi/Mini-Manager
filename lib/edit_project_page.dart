@@ -147,8 +147,8 @@ class _EditProjectPage extends State<EditProjectPage> {
       }
 
       data.sortProjects();
-      data.updateStats();
       _save();
+      data.saveToFirebase();
       print("Project sent to data manager");
 
       Navigator.of(context).pushAndRemoveUntil(
@@ -166,9 +166,12 @@ class _EditProjectPage extends State<EditProjectPage> {
     // print("Project Deleted");
     // print("Project Index: $projectIndex");
     // print(data.projectList[projectIndex].toCSV());
+    int contentAmount = data.projectList[projectIndex].getContentList().length;
+    data.deleteProject(contentAmount);
     data.projectList.removeAt(projectIndex);
     // print(data.projectList.length);
     data.saveAll();
+    data.saveToFirebase();
   }
 
   @override

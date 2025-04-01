@@ -3,6 +3,10 @@ import 'package:mini_manager/data_manager.dart';
 import 'package:mini_manager/projects_page.dart';
 import 'package:mini_manager/shop_page.dart';
 import 'package:mini_manager/calendar_page.dart';
+import 'package:mini_manager/authpage.dart';
+
+//import for logging out
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SettingsStatsPage extends StatefulWidget {
   const SettingsStatsPage({super.key, required this.title});
@@ -55,13 +59,13 @@ class _SettingsStatsPage extends State<SettingsStatsPage> {
                   )
               ),
 
-              FloatingActionButton(
+              OutlinedButton(
                   onPressed: (){
                     data.deleteAll();
                   },
                 child: const Text("DELETE ALL FILES"),
               ),
-              FloatingActionButton(
+              OutlinedButton(
                 onPressed: (){
                   for (int i=0; i< data.projectList.length; i++){
                     print(data.projectList[i].toCSV());
@@ -70,17 +74,24 @@ class _SettingsStatsPage extends State<SettingsStatsPage> {
                 },
                 child: const Text("Show All Projects"),
               ),
-              FloatingActionButton(
+              OutlinedButton(
                 onPressed: (){
                   data.saveToFirebase();
                 },
                 child: const Text("Save to firebase"),
               ),
-              FloatingActionButton(
+              OutlinedButton(
                 onPressed: (){
                   data.loadFromFirebase();
                 },
                 child: const Text("Load from firebase"),
+              ),
+              OutlinedButton(
+                onPressed: (){
+                  FirebaseAuth.instance.signOut();
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AuthPage(title: "Authentication")));
+                },
+                child: const Text("Sign Out"),
               ),
 
               //Bottom Nav Bar

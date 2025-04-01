@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mini_manager/calendar_page.dart';
+import 'package:mini_manager/data_manager.dart';
 
 
 class AuthPage extends StatefulWidget {
@@ -19,6 +20,9 @@ class _AuthPage extends State<AuthPage> {
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  DataManager data = DataManager();
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,12 +56,33 @@ class _AuthPage extends State<AuthPage> {
                   FirebaseAuth.instance.signInWithEmailAndPassword(
                       email: emailController.text,
                       password: passwordController.text
-                  ).then((value) {
+                  ).then((value) async {
                     print("Successful login.");
                     print(value.user!.uid);
 
+                    //Load in info from cloud
+                    data.loadFromFirebase();
+                    data.saveAll();
+
+                    //Show Loading alert
+                    showDialog<String>(
+                      context: context,
+                      builder:
+                          (BuildContext context) => AlertDialog(
+                        title: const Text('Login Successful!'),
+                        content: const Text('Please wait while we retrieve your projects.'),
+                        actions: <Widget>[
+                          // TextButton(
+                          //   onPressed: () => Navigator.pop(context, 'OK'),
+                          //   child: const Text('OK'),
+                          // ),
+                        ],
+                      ),
+                    );
+
                     //go to calendar page after login
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CalendarPage(title: "Calendar")));
+                    Timer(const Duration(seconds: 5), () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CalendarPage(title: "Calendar"))));
+
                   }).catchError((error) {
                     print("ERROR HERE: ");
                     print(error.toString());
@@ -109,7 +134,7 @@ class _AuthPage extends State<AuthPage> {
                       .createUserWithEmailAndPassword(
                       email: emailController.text,
                       password: passwordController.text
-                  ).then((value) {
+                  ).then((value) async {
                     print("Successfully signed up the user.");
                     print(value.user!.uid);
 
@@ -118,6 +143,12 @@ class _AuthPage extends State<AuthPage> {
                         email: emailController.text,
                         password: passwordController.text
                     );
+
+
+
+                    //Load in info from cloud
+                    await data.loadFromFirebase();
+                    data.saveAll();
 
                     //go to calendar page after login
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CalendarPage(title: "Calendar")));

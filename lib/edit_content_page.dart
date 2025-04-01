@@ -183,8 +183,8 @@ class _EditContentPage extends State<EditContentPage> {
       data.projectList[projectIndex].getContent(contentIndex).setDate(pReleaseDate);
       data.projectList[projectIndex].sortContentByDate();
       data.sortProjects();
-      data.updateStats();
       _save();
+      data.saveToFirebase();
       print("Project sent to data manager");
 
       Navigator.of(context).pushAndRemoveUntil(
@@ -205,6 +205,7 @@ class _EditContentPage extends State<EditContentPage> {
     data.projectList[projectIndex].sortContentByDate();
     data.projectList[projectIndex].updateCoinValue();
     data.saveAll();
+    data.saveToFirebase();
   }
 
   @override

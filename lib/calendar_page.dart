@@ -125,6 +125,8 @@ class _CalendarPage extends State<CalendarPage> with AfterLayoutMixin<CalendarPa
   void initState() {
     super.initState();
     print(FirebaseAuth.instance.currentUser!.email.toString());
+    // data.loadFromFirebase();
+    // data.saveAll();
     Timer(const Duration(seconds: 1), () => setState(() {
       _focusedDay = DateTime.now();
       _contentWidgetList = _updateContentWidgetList(_getEventsForDay(DateTime.now()));

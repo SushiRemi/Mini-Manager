@@ -271,8 +271,14 @@ class DataManager {
 
   }
 
-  //Update Stats
-  void updateStats(){
+  //Create Project stat update
+  void createProject(int contentAmount){
+    stats.contentCreated += contentAmount;
+    stats.projectsCreated += 1;
+  }
+
+  //Delete Project stat update
+  void deleteProject(int contentAmount){
 
   }
 
@@ -357,7 +363,6 @@ class DataManager {
       await projectsRef.writeToFile(projectsFileIn);
       await itemsRef.writeToFile(itemsFileIn);
       await statsRef.writeToFile(statsFileIn);
-
       //_projectsFile = projectsFileIn as Future<File>;
 
       //note for future me: you need to modify the load function to be able to take non-future files as well

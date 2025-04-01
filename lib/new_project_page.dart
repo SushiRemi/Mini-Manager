@@ -103,9 +103,11 @@ class _NewProjectPage extends State<NewProjectPage> {
       //Create and save into data, then destroy page and go back to projects.
       Project newProject = Project.createNew(pTitle, pType, pDescription, pReleaseDate, pMainContentAmount);
       data.projectList.add(newProject);
+      int contentAmount = newProject.getContentList().length;
       data.sortProjects();
-      data.updateStats();
+      data.createProject(contentAmount);
       _save();
+      data.saveToFirebase();
       print("Project sent to data manager");
 
       Navigator.of(context).pushAndRemoveUntil(

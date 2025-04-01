@@ -23,7 +23,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+//Import for firebase app check plugin
+import 'package:firebase_app_check/firebase_app_check.dart';
 
+//Import for google integrity token provider
 
 
 Future<void> main() async {
@@ -35,15 +38,29 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // FirebaseAuth.instance
-  //     .userChanges()
-  //     .listen((User? user) {
-  //   if (user == null) {
-  //     print('User is currently signed out!');
-  //   } else {
-  //     print('User is signed in!');
-  //   }
-  // });
+  //Initialize AppCheck
+  await FirebaseAppCheck.instance.activate(
+    // // You can also use a `ReCaptchaEnterpriseProvider` provider instance as an
+    // // argument for `webProvider`
+    // webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+    // // Default provider for Android is the Play Integrity provider. You can use the "AndroidProvider" enum to choose
+    // // your preferred provider. Choose from:
+    // // 1. Debug provider
+    // // 2. Safety Net provider
+    // // 3. Play Integrity provider
+    // androidProvider: AndroidProvider.playIntegrity,
+    // // Default provider for iOS/macOS is the Device Check provider. You can use the "AppleProvider" enum to choose
+    // // your preferred provider. Choose from:
+    // // 1. Debug provider
+    // // 2. Device Check provider
+    // // 3. App Attest provider
+    // // 4. App Attest provider with fallback to Device Check provider (App Attest provider is only available on iOS 14.0+, macOS 14.0+)
+    // appleProvider: AppleProvider.appAttest,
+  );
+
+
+  // final token = await FirebaseAppCheck.instance.getToken();
+  // print("App Check Token: $token");
 
   runApp(const MyApp());
 }
@@ -113,15 +130,30 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+
+  DataManager data = DataManager();
+
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 3),
-            // ()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CalendarPage(title: "Calendar"))
-            ()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AuthPage(title: "Authentication"))
+    if(FirebaseAuth.instance.currentUser != null){
+      data.loadFromFirebase();
+      data.saveAll();
+      Timer(const Duration(seconds: 5),
+          ()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CalendarPage(title: "Calendar"))
+              // ()=> Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AuthPage(title: "Authentication"))
 
-        )
-    );
+          )
+      );
+    } else {
+      Timer(const Duration(seconds: 3),
+          // ()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CalendarPage(title: "Calendar"))
+              ()=> Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AuthPage(title: "Authentication"))
+
+          )
+      );
+    }
+
   }
 
 
