@@ -284,8 +284,9 @@ class DataManager {
 
   //Earn Coins
   void earnCoins(int amount){
-    stats.coins += (amount*stats.coinMultiplier).toInt();
-    stats.coinsEarned += amount;
+    int total = (amount*stats.coinMultiplier).toInt();
+    stats.coins += total;
+    stats.coinsEarned += total;
   }
 
   //Spend Coins

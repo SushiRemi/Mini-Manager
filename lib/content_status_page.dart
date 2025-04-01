@@ -158,6 +158,30 @@ class _ContentStatusPage extends State<ContentStatusPage> {
                             data.earnCoins(coinValue);
                             data.completeContent();
 
+                            bool projectDone = true;
+                            int complete = 0;
+                            int failed = 0;
+                            for(int i=0; i<data.projectList[parentIndex].getContentList().length; i++){
+                              String status = data.projectList[parentIndex].getContent(i).getStatus();
+                              if(status.contains("In Progress")){
+                                projectDone = false;
+                                break;
+                              } else if(status.contains("Completed")){
+                                complete++;
+                              } else if(status.contains("Cancelled")){
+                                failed++;
+                              }
+                            }
+
+                            if(projectDone){
+                              int total = complete + failed;
+                              if(complete/total >= 0.66){
+                                data.stats.projectsCompleted++;
+                              } else {
+                                data.stats.projectsFailed++;
+                              }
+                            }
+
                             DateTime now = DateTime.now();
                             DateTime today = DateTime(now.year, now.month, now.day);
                             if(releaseDate.compareTo(today) < 0){
@@ -205,7 +229,7 @@ class _ContentStatusPage extends State<ContentStatusPage> {
                         ),
                         TextButton(
                           onPressed: () {
-                            //Set content as complete
+                            //Set content as cancelled
                             print("Project Index: $parentIndex");
                             print("Content Index: $contentIndex");
                             data.projectList[parentIndex].getContent(contentIndex).setStatus("Cancelled");
@@ -213,6 +237,30 @@ class _ContentStatusPage extends State<ContentStatusPage> {
                             //Add coins to stats
                             //data.earnCoins(coinValue);
                             data.cancelContent();
+
+                            bool projectDone = true;
+                            int complete = 0;
+                            int failed = 0;
+                            for(int i=0; i<data.projectList[parentIndex].getContentList().length; i++){
+                              String status = data.projectList[parentIndex].getContent(i).getStatus();
+                              if(status.contains("In Progress")){
+                                projectDone = false;
+                                break;
+                              } else if(status.contains("Completed")){
+                                complete++;
+                              } else if(status.contains("Cancelled")){
+                                failed++;
+                              }
+                            }
+
+                            if(projectDone){
+                              int total = complete + failed;
+                              if(complete/total >= 0.66){
+                                data.stats.projectsCompleted++;
+                              } else {
+                                data.stats.projectsFailed++;
+                              }
+                            }
 
                             //Check if project is complete in load function
                             //Save data
