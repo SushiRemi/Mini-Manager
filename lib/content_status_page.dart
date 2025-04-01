@@ -191,6 +191,7 @@ class _ContentStatusPage extends State<ContentStatusPage> {
                             //Check if project is complete in load function
                             //Save data
                             data.saveAll();
+                            data.saveToFirebase();
                             print(data.stats.coins);
 
                             //Return to Calendar Page
@@ -265,6 +266,7 @@ class _ContentStatusPage extends State<ContentStatusPage> {
                             //Check if project is complete in load function
                             //Save data
                             data.saveAll();
+                            data.saveToFirebase();
                             print(data.stats.coins);
                             print(data.stats.coinMultiplier);
 
