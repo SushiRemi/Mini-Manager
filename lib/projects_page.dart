@@ -47,7 +47,7 @@ class _ProjectsPage extends State<ProjectsPage> with AfterLayoutMixin<ProjectsPa
   DataManager data = DataManager();
 
 
-  //For dynamically displaying events
+  //For dynamically displaying projects
   List<ProjectWidget> _projectWidgetList = [];
 
   //save projects to file
@@ -282,6 +282,13 @@ class ProjectWidget extends StatelessWidget {
     String releaseDateString = ("${releaseDate.month}/${releaseDate.day}/${releaseDate.year}");
     String dateString = (releaseDateString);
     return Container(
+      color: Colors.black,
+      margin: const EdgeInsets.all(3.0),
+      padding: const EdgeInsets.all(0.0),
+      child:
+      Container(
+        margin: const EdgeInsets.all(5.0),
+        padding: const EdgeInsets.all(0.0),
         color: Colors.blue,
         //height: 100,
         //width: 100,
@@ -289,7 +296,7 @@ class ProjectWidget extends StatelessWidget {
           onPressed: (){
             //Should change to project viewing page
             Navigator.of(context).push<void>(
-                MaterialPageRoute(builder: (context) => ProjectViewPage(title: "Project View", project: project, index: index,)),
+              MaterialPageRoute(builder: (context) => ProjectViewPage(title: "Project View", project: project, index: index,)),
             );
           },
           child: Column(
@@ -376,6 +383,8 @@ class ProjectWidget extends StatelessWidget {
               ]
           ),
         )
+    )
+
     );
   }
 }
