@@ -209,7 +209,7 @@ class _EditItemPage extends State<EditItemPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    //data.loadShop();
+    data.loadShop();
   }
 
   @override
@@ -361,7 +361,7 @@ class _EditItemPage extends State<EditItemPage> {
                   fontSize: 20,
                 ),
               ),
-              //Submit Button
+              //Save Button
               TextButton(
                 style: const ButtonStyle(
                     textStyle: WidgetStatePropertyAll<TextStyle>(TextStyle(
@@ -376,6 +376,49 @@ class _EditItemPage extends State<EditItemPage> {
                   "Save Item",
                 ),
               ),
+              //Delete Button
+              TextButton(
+                style: const ButtonStyle(
+                    textStyle: WidgetStatePropertyAll<TextStyle>(TextStyle(
+                      fontSize: 33,
+                      color: Colors.purple,
+                    ))
+                ),
+                onPressed:
+                    () => showDialog<String>(
+                  context: context,
+                  builder:
+                      (BuildContext context) => AlertDialog(
+                    title: const Text('Delete Project?'),
+                    content: const Text('This will completely delete the project and all related content. Your coin amount and streak will not be affected.'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'Cancel'),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          print("Index $index");
+                          data.shopList.removeAt(index);
+                          data.saveShop();
+                          data.saveToFirebase();
+                          print("Remaining Items: " + data.shopList.length.toString());
+                          Timer(Duration(milliseconds: 200), () => Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(builder: (context) => const ShopPage(title: "Shop")),
+                              ModalRoute.withName("Shop")
+                          ));
+
+                        },
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ),
+                ),
+                child: const Text(
+                  "Delete Item",
+                ),
+              ),
+
             ],
           )
       ),
