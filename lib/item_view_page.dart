@@ -13,6 +13,8 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:mini_manager/shop_page.dart';
 import 'package:mini_manager/shopitem.dart';
 
+import 'edit_item_page.dart';
+
 class ItemViewPage extends StatefulWidget {
   const ItemViewPage({super.key, required this.title, required this.index, required this.name, required this.description, required this.cost, required this.icon});
 
@@ -81,6 +83,7 @@ class _ItemViewPage extends State<ItemViewPage> {
   Color iconColor = Colors.orange;
   double iconSize = 200;
   int coins = 0;
+  String iconName = "Favorite";
 
   _ItemViewPage(int index, String title, String description, int cost, Icon icon){
     data.loadAll();
@@ -109,6 +112,7 @@ class _ItemViewPage extends State<ItemViewPage> {
     //data.loadShop();
     Timer(const Duration(milliseconds: 100), () => setState(() {
       coins = data.stats.coins;
+      iconName = data.shopList[index].getIcon();
     }));
   }
 
@@ -277,10 +281,15 @@ class _ItemViewPage extends State<ItemViewPage> {
                       )
 
                   ),
+                  //Edit item button
                   TextButton(
                       onPressed: (){
                         //
                         print("Edit Item");
+                        print(iconName);
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => EditItemPage(title: "Edit Item", index: index, name: pTitle, description: pDescription, iconName: iconName, cost: pCost,)),
+                        );
                       },
                       child:
                       Container(
