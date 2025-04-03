@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:mini_manager/data_manager.dart';
 import 'package:mini_manager/projects_page.dart';
@@ -277,6 +278,40 @@ class _SettingsStatsPage extends State<SettingsStatsPage> {
 
                         child: const Text("Sign Out"),
                       ),
+                      //Delete Account Button
+                      OutlinedButton(
+                        onPressed:
+                            () => showDialog<String>(
+                          context: context,
+                          builder:
+                              (BuildContext context) => AlertDialog(
+                            title: const Text('Delete Account?'),
+                            content:
+                            Text("This action will delete your account and all its data, then take you back to the login page. "
+                                "This action can not be reversed."),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, 'Back'),
+                                child: const Text('Back'),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  await data.deleteAll();
+                                  await data.deleteFromFirebase();
+                                  data.loadAll();
+                                  await FirebaseAuth.instance.currentUser?.delete();
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AuthPage(title: "Authentication")));
+                                },
+                                child: const Text("Delete Account"),
+                              ),
+
+                            ],
+                          ),
+                        ),
+
+                        child: const Text("Delete Account"),
+                      ),
+
                     ],
                   )
               ),

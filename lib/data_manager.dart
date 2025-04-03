@@ -378,4 +378,28 @@ class DataManager {
     loadAll();
   }
 
+  //Deletes cloud directory for user, only use when deleting account
+  Future<void> deleteFromFirebase() async{
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+
+    // Location to load files from
+    String projectsLocation = "userdata/" + uid + "/" + "savedProjects.csv";
+    String itemsLocation = "userdata/" + uid + "/" + "savedItems.csv";
+    String statsLocation = "userdata/" + uid + "/" + "savedStats.txt";
+
+    // Create a storage reference from our app
+    final projectsRef = storageRef.ref(projectsLocation);
+    final itemsRef = storageRef.ref(itemsLocation);
+    final statsRef = storageRef.ref(statsLocation);
+
+    try {
+      await projectsRef.delete();
+      await itemsRef.delete();
+      await statsRef.delete();
+    } catch (e) {
+      print("Error in deleting user files");
+      print(e.toString());
+    }
+  }
+
 }
