@@ -58,6 +58,7 @@ class _CalendarPage extends State<CalendarPage> with AfterLayoutMixin<CalendarPa
   List<DynamicWidget> _contentWidgetList = [];
   List<int> indexList = [];
   List<int> contentIndexList = [];
+  int coins = 0;
 
   void _save() {
     data.saveProjects();
@@ -65,6 +66,7 @@ class _CalendarPage extends State<CalendarPage> with AfterLayoutMixin<CalendarPa
 
   void _load() {
     data.loadProjects();
+    data.loadStats();
     print("loaded projects");
   }
 
@@ -127,9 +129,10 @@ class _CalendarPage extends State<CalendarPage> with AfterLayoutMixin<CalendarPa
     print(FirebaseAuth.instance.currentUser!.email.toString());
     // data.loadFromFirebase();
     // data.saveAll();
-    Timer(const Duration(seconds: 1), () => setState(() {
+    Timer(const Duration(milliseconds: 200), () => setState(() {
       _focusedDay = DateTime.now();
       _contentWidgetList = _updateContentWidgetList(_getEventsForDay(DateTime.now()));
+      coins = data.stats.coins;
     }));
   }
 
@@ -144,6 +147,27 @@ class _CalendarPage extends State<CalendarPage> with AfterLayoutMixin<CalendarPa
         leading: null,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Image(
+                image: AssetImage("assets/coins.png"),
+                width: 40,
+                height: 40,
+              ),
+              Text(
+                coins.toString() + "     ",
+                style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.black,
+                ),
+              )
+            ],
+          )
+
+        ],
+
       ),
       body: Center(
 
@@ -349,10 +373,16 @@ class DynamicWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return Container(
-      color: Colors.blue,
-      //height: 100,
-      //width: 100,
-      child: TextButton(
+      margin: const EdgeInsets.all(3.0),
+      padding: const EdgeInsets.all(0.0),
+      color: Colors.black,
+      child: Container(
+        margin: const EdgeInsets.all(5.0),
+        padding: const EdgeInsets.all(0.0),
+        color: Colors.blue,
+        //height: 100,
+        //width: 100,
+        child: TextButton(
           onPressed: (){
             //Can only access if it is marked as In Progress or Incomplete
             if(status.contains("Incomplete") || status.contains("In Progress")){
@@ -362,89 +392,91 @@ class DynamicWidget extends StatelessWidget {
             }
           },
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              Text(
-                ("Project: $parent"),
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              ExpandableText(
-                description,
-                expandText: "Show Full",
-                collapseText: "Show Less",
-                maxLines: 1,
-                animation: true,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black45,
-                ),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        type,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      )
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
-                  Expanded(
-                      child: Text(
-                        textAlign: TextAlign.center,
-                          status,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                      )
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  ("Project: $parent"),
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Image(
-                          image: AssetImage("assets/coins.png"),
-                          width: 20,
-                          height: 20,
-                        ),
-                        Text(
-                          coinValue.toString(),
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        )
-                      ],
-                    )
+                  textAlign: TextAlign.left,
+                ),
+                ExpandableText(
+                  description,
+                  expandText: "Show Full",
+                  collapseText: "Show Less",
+                  maxLines: 1,
+                  animation: true,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black45,
+                  ),
+                ),
+                Row(
+                    children: [
+                      Expanded(
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            type,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          )
+                      ),
+                      Expanded(
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            status,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          )
+                      ),
+                      Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Image(
+                                image: AssetImage("assets/coins.png"),
+                                width: 20,
+                                height: 20,
+                              ),
+                              Text(
+                                coinValue.toString(),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              )
+                            ],
+                          )
 
-                  ),
-                ]
-              ),
+                      ),
+                    ]
+                ),
 
-            ]
+              ]
           ),
-      )
+        )
+    )
+
     );
   }
 }

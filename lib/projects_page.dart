@@ -45,6 +45,7 @@ class ProjectsPage extends StatefulWidget {
 
 class _ProjectsPage extends State<ProjectsPage> with AfterLayoutMixin<ProjectsPage> {
   DataManager data = DataManager();
+  int coins = 0;
 
 
   //For dynamically displaying projects
@@ -58,6 +59,7 @@ class _ProjectsPage extends State<ProjectsPage> with AfterLayoutMixin<ProjectsPa
   //load projects from file
   void _load() {
     data.loadProjects();
+    data.loadStats();
   }
 
   //to update project widgets
@@ -81,6 +83,27 @@ class _ProjectsPage extends State<ProjectsPage> with AfterLayoutMixin<ProjectsPa
         automaticallyImplyLeading: false,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Image(
+                image: AssetImage("assets/coins.png"),
+                width: 40,
+                height: 40,
+              ),
+              Text(
+                coins.toString() + "     ",
+                style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.black,
+                ),
+              )
+            ],
+          )
+
+        ],
+
       ),
       body: Center(
         child: Flex(
@@ -229,8 +252,10 @@ class _ProjectsPage extends State<ProjectsPage> with AfterLayoutMixin<ProjectsPa
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 1), () => setState(() {
+    data.loadProjects();
+    Timer(const Duration(milliseconds: 200), () => setState(() {
       _projectWidgetList = _updateProjectWidgetList(data.projectList);
+      coins = data.stats.coins;
     }));
   }
 }

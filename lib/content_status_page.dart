@@ -34,6 +34,7 @@ class _ContentStatusPage extends State<ContentStatusPage> {
   int contentIndex = -1;
   DateTime releaseDate = DateTime(0,0,0);
   String releaseDateString = "";
+  int coins = 0;
 
   _ContentStatusPage(Content contentIn, int parentIndexIn, int contextIndexIn){
     data.loadAll();
@@ -48,24 +49,48 @@ class _ContentStatusPage extends State<ContentStatusPage> {
     description = content.getDescription();
     releaseDate = content.getDate();
     releaseDateString = releaseDate.toString().substring(0,10);
+    coins = data.stats.coins;
   }
 
   @override
   void initState() {
     super.initState();
 
-    Timer(const Duration(seconds: 1), () => setState(() {
+    Timer(const Duration(milliseconds: 200), () => setState(() {
       //print(parentIndex);
       parent = data.projectList[parentIndex];
+      coins = data.stats.coins;
     }));
   }
 
   @override
   Widget build(BuildContext context) {
+    data.loadStats();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Image(
+                image: AssetImage("assets/coins.png"),
+                width: 40,
+                height: 40,
+              ),
+              Text(
+                coins.toString() + "     ",
+                style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.black,
+                ),
+              )
+            ],
+          )
+
+        ],
+
       ),
       body: Center(
         child: Column(

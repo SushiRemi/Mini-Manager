@@ -46,21 +46,8 @@ class _SettingsStatsPage extends State<SettingsStatsPage> {
   void initState(){
     super.initState();
     data.loadAll();
-    // coins = data.stats.coins;
-    // coinsSpent = data.stats.coinsSpent;
-    // coinsEarned = data.stats.coinsEarned;
-    // itemsBought = data.stats.itemsBought;
-    // contentStreak = data.stats.contentStreak;
-    // longestStreak = data.stats.longestStreak;
-    // projectsCreated = data.stats.projectsCreated;
-    // projectsCompleted = data.stats.projectsCompleted;
-    // projectsFailed = data.stats.projectsFailed;
-    // contentCreated = data.stats.contentCreated;
-    // contentCompleted = data.stats.contentCompleted;
-    // contentFailed = data.stats.contentFailed;
-    // coinMultiplier = data.stats.coinMultiplier;
 
-    Timer(const Duration(seconds: 1), () => setState(() {
+    Timer(const Duration(milliseconds: 200), () => setState(() {
       coins = data.stats.coins;
       coinsSpent = data.stats.coinsSpent;
       coinsEarned = data.stats.coinsEarned;
@@ -104,6 +91,26 @@ class _SettingsStatsPage extends State<SettingsStatsPage> {
         leading: null,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Image(
+                image: AssetImage("assets/coins.png"),
+                width: 40,
+                height: 40,
+              ),
+              Text(
+                coins.toString() + "     ",
+                style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.black,
+                ),
+              )
+            ],
+          )
+
+        ],
       ),
       body: Center(
           child: Column(

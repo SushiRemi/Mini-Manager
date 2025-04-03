@@ -293,6 +293,7 @@ class DataManager {
   void spendCoins(int amount){
     stats.coins -= amount;
     stats.coinsSpent += amount;
+    stats.itemsBought += 1;
   }
 
   //Complete Content

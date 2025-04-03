@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mini_manager/data_manager.dart';
 import 'package:mini_manager/projects_page.dart';
@@ -11,6 +13,7 @@ import 'package:mini_manager/new_item_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:swipeable_page_route/swipeable_page_route.dart';
 import 'go_router.dart';
+import 'item_view_page.dart';
 
 enum NavigationMode{
   navigator,
@@ -36,6 +39,7 @@ class _ShopPage extends State<ShopPage> {
 
   //For dynamically displaying shop items
   List<Row> _itemWidgetList = [];
+  int coins = 0;
 
   void _incrementCounter() {
     setState(() {
@@ -45,6 +49,7 @@ class _ShopPage extends State<ShopPage> {
 
   //to update item widgets
   List<Row> _updateItemWidgetList(List<ShopItem> itemList){
+    print("Number of items in shop: " + itemList.length.toString());
     List<Row> newItemRowList = [];
     ItemWidget tempItem1 = ItemWidget.empty();
     ItemWidget tempItem2 = ItemWidget.empty();
@@ -64,7 +69,11 @@ class _ShopPage extends State<ShopPage> {
       rowIndex++;
 
       if(rowIndex > 1 || (i+1) >= itemList.length){
-        itemRow = Row(children: [tempItem1, tempItem2],);
+        if(rowIndex == 1){
+          itemRow = Row(children: [tempItem1],);
+        } else {
+          itemRow = Row(children: [tempItem1, tempItem2],);
+        }
         newItemRowList.add(itemRow);
         itemRow = new Row();
         rowIndex = 0;
@@ -108,6 +117,18 @@ class _ShopPage extends State<ShopPage> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    data.loadShop();
+    data.loadStats();
+    Timer(const Duration(milliseconds: 100), () => setState(() {
+      _itemWidgetList = _updateItemWidgetList(data.shopList);
+      coins = data.stats.coins;
+    }));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -115,6 +136,27 @@ class _ShopPage extends State<ShopPage> {
         leading: null,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text("Coin Shop"),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Image(
+                image: AssetImage("assets/coins.png"),
+                width: 40,
+                height: 40,
+              ),
+              Text(
+                coins.toString() + "     ",
+                style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.black,
+                ),
+              )
+            ],
+          )
+
+        ],
+
       ),
       body: Center(
         child: Flex(
@@ -132,7 +174,7 @@ class _ShopPage extends State<ShopPage> {
                           Expanded(
                             child: TextButton(
                               onPressed: (){
-                                data.saveAll();
+                                //data.saveAll();
 
                                 // Change to new item page when ready
                                 Navigator.of(context).push(
@@ -209,8 +251,12 @@ class _ShopPage extends State<ShopPage> {
                     ),
 
                     //Shop Page
-                    const IconButton(
-                      onPressed: null,
+                    IconButton(
+                      onPressed: (){
+                        setState(() {
+                          _itemWidgetList = _updateItemWidgetList(data.shopList);
+                        });
+                      },
                       icon: Icon(
                           Icons.currency_exchange,
                           color: Colors.yellow,
@@ -272,7 +318,8 @@ class ItemWidget extends StatelessWidget {
     itemName = item.getName();
     description = item.getDescription();
     coinValue = item.getCost();
-    String iconName = item.getIcon();
+    String iconName = item.getIcon().toLowerCase();
+    this.index = index;
 
     switch(iconName) {
       case "shopping":
@@ -367,7 +414,7 @@ class ItemWidget extends StatelessWidget {
         Container(
           color: Colors.black,
           margin: const EdgeInsets.all(1.0),
-            padding: const EdgeInsets.all(0.0),
+          padding: const EdgeInsets.all(0.0),
           child:
           Container(
               margin: const EdgeInsets.all(5.0),
@@ -382,9 +429,9 @@ class ItemWidget extends StatelessWidget {
                 onPressed: (){
                   //Should change to item viewing page
 
-                  // Navigator.of(context).push<void>(
-                  //   MaterialPageRoute(builder: (context) => ItemViewPage(title: "Item View",)),
-                  // );
+                  Navigator.of(context).push<void>(
+                    MaterialPageRoute(builder: (context) => ItemViewPage(title: "Item View", index: index, name: itemName, description: description, cost: coinValue, icon: icon,)),
+                  );
                 },
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,

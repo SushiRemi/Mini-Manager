@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:mini_manager/projects_page.dart';
 //used for info text
 import 'package:expandable_text/expandable_text.dart';
 import 'package:mini_manager/shop_page.dart';
+import 'package:mini_manager/shopitem.dart';
 
 class NewItemPage extends StatefulWidget {
   const NewItemPage({super.key, required this.title, required this.index});
@@ -21,24 +23,39 @@ class NewItemPage extends StatefulWidget {
 }
 
 //DropdownMenuEntry labels and values for project type dropdown menu
-typedef TypeEntry = DropdownMenuEntry<TypeLabel>;
+typedef IconEntry = DropdownMenuEntry<IconLabel>;
+const double iconSize = 50;
+const Color iconColor = Colors.black;
 
-enum TypeLabel {
+enum IconLabel {
+
   //select('Select', "select"),
-  album('Album', "Album"),
-  ep('EP', "EP"),
-  single('Single', "Single"),
-  other('Other', "Other"),;
+  shopping('Shopping', Icon(Icons.shopping_bag, size: iconSize, color: iconColor,)),
+  drink('Drink', Icon(Icons.coffee, size: iconSize, color: iconColor,)),
+  food('Food', Icon(Icons.fastfood, size: iconSize, color: iconColor,)),
+  social('Social', Icon(Icons.emoji_people, size: iconSize, color: iconColor,)),
+  art('Art', Icon(Icons.brush, size: iconSize, color: iconColor,)),
+  music('Music', Icon(Icons.piano, size: iconSize, color: iconColor,)),
+  movie('Movie', Icon(Icons.local_movies, size: iconSize, color: iconColor,)),
+  electronics('Electronics', Icon(Icons.computer, size: iconSize, color: iconColor,)),
+  ticket('Ticket', Icon(Icons.confirmation_num_outlined, size: iconSize, color: iconColor,)),
+  game('Game', Icon(Icons.videogame_asset_rounded, size: iconSize, color: iconColor,)),
+  book('Book', Icon(Icons.book, size: iconSize, color: iconColor,)),
+  trip('Trip', Icon(Icons.airplanemode_on, size: iconSize, color: iconColor,)),
+  favorite('Favorite', Icon(Icons.star, size: iconSize, color: iconColor,)),
+  heart('Heart', Icon(Icons.favorite, size: iconSize, color: iconColor,)),
+  other('Other', Icon(Icons.question_mark, size: iconSize, color: iconColor,));
 
-  const TypeLabel(this.label, this.value);
+  const IconLabel(this.label, this.value);
   final String label;
-  final String value;
+  final Icon value;
 
-  static final List<TypeEntry> entries = UnmodifiableListView<TypeEntry>(
-    values.map<TypeEntry>(
-          (TypeLabel type) => TypeEntry(
-        value: type,
-        label: type.label,
+  static final List<IconEntry> entries = UnmodifiableListView<IconEntry>(
+    values.map<IconEntry>(
+          (IconLabel icon) => IconEntry(
+        value: icon,
+        leadingIcon: icon.value,
+        label: icon.label,
         //enabled: type.label != 'Select',
         style: MenuItemButton.styleFrom(foregroundColor: Colors.black),
       ),
@@ -47,67 +64,41 @@ enum TypeLabel {
 }
 
 class _NewItemPage extends State<NewItemPage> {
-  int projectIndex = 0;
-  Project project = Project.empty();
   DataManager data = DataManager();
 
   //for project creation
   String pTitle = "";
   String pDescription = "";
-  String pType = "Album";
-  int pMainContentAmount = -1;
+  Icon pIcon = Icon(Icons.favorite, size: iconSize, color: iconColor,);
+  String pIconName = "Favorite";
+  int pCost = -1;
   DateTime pReleaseDate = DateTime(0);
 
 
   //save projects to file
   void _save() {
-    data.saveProjects();
-    data.saveStats();
+    data.saveShop();
   }
 
   //load projects from file
   void _load() {
-    data.loadProjects();
+    data.loadShop();
   }
-
-  //Date picker for release date form
-  Future<void> _selectDate() async {
-    DateTime? _picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2200)
-    );
-
-    if (_picked != null){
-      setState(() {
-        _dateController.text = _picked.toString().split(" ")[0];
-        pReleaseDate = _picked;
-      });
-    }
-  }
-
-  //Controller for date field viewer
-  final TextEditingController _dateController = TextEditingController();
 
   //Attempt to create new project
   void _submitItem(){
     print("Title: $pTitle");
     print("Description: $pDescription");
-    print("Type: $pType");
-    print("Main Content Amount: $pMainContentAmount");
-    print("Release Date: $pReleaseDate");
+    print("Icon: $pIconName");
+    print("Cost: $pCost");
     print("SUBMITTED");
 
     //Check if enough info is filled out
-    if(pTitle != "" && pMainContentAmount != -1 && pReleaseDate.compareTo(DateTime(0)) != 0 && DateTime.now().compareTo(pReleaseDate) < 0){
+    if(pTitle != "" && pCost >= 0){
       print("VALID");
       //Create and save into data, then destroy page and go back to projects.
-      Project newProject = Project.createNew(pTitle, pType, pDescription, pReleaseDate, pMainContentAmount);
-      data.projectList.add(newProject);
-      int contentAmount = newProject.getContentList().length;
-      data.sortProjects();
-      data.createProject(contentAmount);
+      ShopItem newItem = ShopItem(pTitle, pCost, pDescription, pIconName);
+      data.shopList.add(newItem);
       _save();
       data.saveToFirebase();
       print("Item sent to data manager");
@@ -117,23 +108,29 @@ class _NewItemPage extends State<NewItemPage> {
           ModalRoute.withName("Shop Page")
       );
 
+      // Timer(const Duration(seconds: 3), () => Navigator.of(context).pushAndRemoveUntil(
+      //     MaterialPageRoute(builder: (context) => const ShopPage(title: "Shop Page")),
+      //     ModalRoute.withName("Shop Page")
+      // ));
+
+
+
     } else {
       print("INVALID");
     }
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //data.loadShop();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _load();
-    projectIndex = widget.index;
-    int contentAmount = 0;
 
-    //loads in current or new project
-    if(projectIndex >= 0){
-      project = data.projectList[projectIndex];
-    } else {
-      project = Project.empty();
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -143,29 +140,6 @@ class _NewItemPage extends State<NewItemPage> {
       body: Center(
           child: ListView(
             children: [
-              //Info Field
-              const ExpandableText(
-                "\nThe [Release Date] is the date on which you plan to release the final version of the project.\n\n"
-                    "[Main Content] refers to any singles or partial projects you plan on releasing BEFORE the final version.\n\n"
-                    "Each [Main Content] will generate by default 2 lead-up/teaser videos before the [Main Content] date. The scheduler will attempt to give 3 days of space between each upload, but will decrease if there is not enough time before the release date.\n\n"
-                    "In addition, the project will automatically schedule two teaser videos before the final release date, and two post-release videos after the date.\n\n"
-                    "It is strongly recommended to schedule the release date at least twice the amount of weeks in advance as there is main content (ex: 4 main content -> release date 8 weeks from today's date minimum).",
-                expandText: "Show",
-                collapseText: "Hide",
-                prefixText: "How Project Creation Works:",
-                prefixStyle: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-                maxLines: 1,
-                animation: true,
-                style: TextStyle(
-                  fontSize: 21,
-                  fontWeight: FontWeight.normal,
-                  color: Colors.black,
-                ),
-              ),
               //Title Field
               Container(
                   color: Colors.pinkAccent,
@@ -238,11 +212,13 @@ class _NewItemPage extends State<NewItemPage> {
                                 ),
                                 DropdownMenu(
                                   width: 200,
-                                  dropdownMenuEntries: TypeLabel.entries,
-                                  initialSelection: TypeLabel.album,
-                                  onSelected: (TypeLabel? selectedType){
+                                  dropdownMenuEntries: IconLabel.entries,
+                                  initialSelection: IconLabel.favorite,
+                                  leadingIcon: pIcon,
+                                  onSelected: (IconLabel? selectedType){
                                     setState(() {
-                                      pType = selectedType!.value;
+                                      pIconName = selectedType!.label;
+                                      pIcon = selectedType.value;
                                     });
                                   },
                                 ),
@@ -263,10 +239,16 @@ class _NewItemPage extends State<NewItemPage> {
                                   ),
                                 ),
                                 TextField(
-                                    groupId: project.getContentList().length,
+                                    //groupId: project.getContentList().length,
                                     keyboardType: TextInputType.number,
                                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                    onChanged: (String value) {pMainContentAmount = int.parse(value);}
+                                    onChanged: (String value) {
+                                      if(value.isEmpty){
+                                        pCost = -1;
+                                      } else {
+                                        pCost = int.parse(value);
+                                      }
+                                    }
                                 )
                               ]
                           ),
@@ -275,7 +257,22 @@ class _NewItemPage extends State<NewItemPage> {
                   )
 
               ),
-
+              //Recommended Item Costs
+              Text(
+                  "Recommended Cost Values:",
+                style: TextStyle(
+                  fontSize: 25,
+                ),
+              ),
+              Text(
+                "Small Item - 20 to 90 coins\n"
+                "Medium Item - 100 to 400 coins\n"
+                "Large Item - 400 to 1000 coins\n"
+                "Huge Item - 1000+ coins",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
               //Submit Button
               TextButton(
                 style: const ButtonStyle(

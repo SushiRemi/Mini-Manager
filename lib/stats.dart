@@ -49,7 +49,7 @@ class Stats{
     projectsCompleted = projectsCompletedIn;
     projectsFailed = projectsFailedIn;
     contentCreated = contentCreatedIn;
-    contentCompleted = contentCreatedIn;
+    contentCompleted = contentCompletedIn;
     contentFailed = contentFailedIn;
     updateMultiplier();
   }
