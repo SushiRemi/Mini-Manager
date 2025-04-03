@@ -251,6 +251,24 @@ class _ItemViewPage extends State<ItemViewPage> {
                                   data.spendCoins(pCost);
                                   data.saveStats();
                                   Navigator.pop(context, 'Bought');
+                                  showDialog<String>(
+                                      context: context,
+                                      builder: (BuildContext context) => AlertDialog(
+                                        title: const Text('Item Bought!'),
+                                        content: Text('You bought $pTitle on ' + DateTime.now().month.toString() + "/" + DateTime.now().day.toString() + "/" + DateTime.now().year.toString() + "!\nTake a screenshot to record your purchase!"),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pushAndRemoveUntil(
+                                                  MaterialPageRoute(builder: (context) => const ShopPage(title: "Shop")),
+                                                  ModalRoute.withName("Shop")
+                                              );
+                                            },
+                                            child: const Text('Back to shop'),
+                                          )
+                                        ],
+                                      )
+                                  );
                                 },
                                 child: const Text('OK'),
                               ),
