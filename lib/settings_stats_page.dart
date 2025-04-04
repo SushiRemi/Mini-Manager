@@ -63,6 +63,22 @@ class _SettingsStatsPage extends State<SettingsStatsPage> {
       contentFailed = data.stats.contentFailed;
       coinMultiplier = data.stats.coinMultiplier;
     }));
+
+    Timer(const Duration(milliseconds: 1000), () => setState(() {
+      coins = data.stats.coins;
+      coinsSpent = data.stats.coinsSpent;
+      coinsEarned = data.stats.coinsEarned;
+      itemsBought = data.stats.itemsBought;
+      contentStreak = data.stats.contentStreak;
+      longestStreak = data.stats.longestStreak;
+      projectsCreated = data.stats.projectsCreated;
+      projectsCompleted = data.stats.projectsCompleted;
+      projectsFailed = data.stats.projectsFailed;
+      contentCreated = data.stats.contentCreated;
+      contentCompleted = data.stats.contentCompleted;
+      contentFailed = data.stats.contentFailed;
+      coinMultiplier = data.stats.coinMultiplier;
+    }));
   }
 
   void updateStats(){
@@ -277,6 +293,35 @@ class _SettingsStatsPage extends State<SettingsStatsPage> {
                         ),
 
                         child: const Text("Sign Out"),
+                      ),
+                      //Reset Password Button
+                      OutlinedButton(
+                        onPressed:
+                            () => showDialog<String>(
+                          context: context,
+                          builder:
+                              (BuildContext context) => AlertDialog(
+                            title: const Text('Reset Password?'),
+                            content:
+                            Text("This action will send you an email to reset your password."),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, 'Back'),
+                                child: const Text('Back'),
+                              ),
+                              TextButton(
+                                onPressed: (){
+                                  FirebaseAuth.instance.sendPasswordResetEmail(email: FirebaseAuth.instance.currentUser?.email as String);
+                                  Navigator.pop(context);
+                                  //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AuthPage(title: "Authentication")));
+                                },
+                                child: const Text("Send Reset Email"),
+                              ),
+
+                            ],
+                          ),
+                        ),
+                        child: const Text("Reset Password"),
                       ),
                       //Delete Account Button
                       OutlinedButton(

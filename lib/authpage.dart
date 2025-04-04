@@ -55,6 +55,8 @@ class _AuthPage extends State<AuthPage> {
                 labelText: "Password",
               ),
             ),
+            
+            //login and signup buttons
             Flex(
               direction: Axis.horizontal,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -138,7 +140,6 @@ class _AuthPage extends State<AuthPage> {
                         },
                         child: Text("Login")
                     ),
-
                 ),
                 //Signup button
                 Expanded(
@@ -213,9 +214,57 @@ class _AuthPage extends State<AuthPage> {
                       },
                       child: Text("Signup")
                   ),
-
                 ),
               ],
+            ),
+            
+            //Forgot Password Button
+            TextButton(
+                onPressed: () {
+                  showDialog<String>(
+                    context: context,
+                    builder:
+                        (BuildContext context) => AlertDialog(
+                      title: const Text('Password Reset'),
+                      content: const Text('Please enter your email, we will send you an email to reset your password.'),
+                      actions: <Widget>[
+                        TextField(
+                          controller: emailController,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            labelText: "Email",
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context, 'Cancel');
+                              },
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                print(emailController.text);
+                                try{
+                                  FirebaseAuth.instance.sendPasswordResetEmail(email: emailController.text);
+                                } catch (FirebaseAuthException){
+                                  print("Error in sending email");
+                                  print(FirebaseAuthException);
+                                }
+                                //Navigator.pop(context, 'OK');
+                              },
+                              child: const Text('Submit'),
+                            ),
+                          ],
+                        ),
+
+                      ],
+                    ),
+                  );
+                },
+                child: Text("Forgot Password?")
             )
 
           ],

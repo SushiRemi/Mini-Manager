@@ -257,6 +257,10 @@ class _ProjectsPage extends State<ProjectsPage> with AfterLayoutMixin<ProjectsPa
       _projectWidgetList = _updateProjectWidgetList(data.projectList);
       coins = data.stats.coins;
     }));
+    Timer(const Duration(milliseconds: 1000), () => setState(() {
+      _projectWidgetList = _updateProjectWidgetList(data.projectList);
+      coins = data.stats.coins;
+    }));
   }
 }
 

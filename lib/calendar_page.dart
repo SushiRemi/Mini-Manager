@@ -134,6 +134,11 @@ class _CalendarPage extends State<CalendarPage> with AfterLayoutMixin<CalendarPa
       _contentWidgetList = _updateContentWidgetList(_getEventsForDay(DateTime.now()));
       coins = data.stats.coins;
     }));
+    Timer(const Duration(milliseconds: 1000), () => setState(() {
+      _focusedDay = DateTime.now();
+      _contentWidgetList = _updateContentWidgetList(_getEventsForDay(DateTime.now()));
+      coins = data.stats.coins;
+    }));
   }
 
   @override

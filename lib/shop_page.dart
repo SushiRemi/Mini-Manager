@@ -122,7 +122,11 @@ class _ShopPage extends State<ShopPage> {
     super.initState();
     data.loadShop();
     data.loadStats();
-    Timer(const Duration(milliseconds: 100), () => setState(() {
+    Timer(const Duration(milliseconds: 200), () => setState(() {
+      _itemWidgetList = _updateItemWidgetList(data.shopList);
+      coins = data.stats.coins;
+    }));
+    Timer(const Duration(milliseconds: 1000), () => setState(() {
       _itemWidgetList = _updateItemWidgetList(data.shopList);
       coins = data.stats.coins;
     }));
