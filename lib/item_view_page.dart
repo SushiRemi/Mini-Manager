@@ -291,7 +291,7 @@ class _ItemViewPage extends State<ItemViewPage> {
                           child: Text(
                             "Buy Item",
                             style: TextStyle(
-                              fontSize: 44,
+                              fontSize: 40,
                               color: Colors.white,
                             ),
                           ),
@@ -322,7 +322,7 @@ class _ItemViewPage extends State<ItemViewPage> {
                             child: Text(
                               "Edit Item",
                               style: TextStyle(
-                                fontSize: 44,
+                                fontSize: 40,
                                 color: Colors.white,
                               ),
                             ),

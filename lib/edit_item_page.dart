@@ -227,7 +227,7 @@ class _EditItemPage extends State<EditItemPage> {
             children: [
               //Title Field
               Container(
-                  color: Colors.pinkAccent,
+                  color: Colors.blue,
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -254,12 +254,12 @@ class _EditItemPage extends State<EditItemPage> {
               ),
               //Description Field
               Container(
-                  color: Colors.pinkAccent,
+                  color: Colors.blue,
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          "Project Description: ",
+                          "Item Description: ",
                           style: TextStyle(
                             fontSize: 22,
                             color: Colors.black,

@@ -47,7 +47,6 @@ class _ProjectsPage extends State<ProjectsPage> with AfterLayoutMixin<ProjectsPa
   DataManager data = DataManager();
   int coins = 0;
 
-
   //For dynamically displaying projects
   List<ProjectWidget> _projectWidgetList = [];
 
@@ -75,6 +74,8 @@ class _ProjectsPage extends State<ProjectsPage> with AfterLayoutMixin<ProjectsPa
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData queryData;
+    queryData = MediaQuery.of(context);
     _load();
     //print("Project List Length: ");
     // print(data.projectList.length);
@@ -114,31 +115,30 @@ class _ProjectsPage extends State<ProjectsPage> with AfterLayoutMixin<ProjectsPa
               child: Column(
                 children: [
                   //Create new project button
-                  Row(
+                  Flex(
+                    direction: Axis.horizontal,
                       children: [
                         Expanded(
                           child: Container(
                             color: Colors.black12,
-                            child:
-                            Expanded(
-                              child: TextButton(
-                                onPressed: (){
-                                  _save();
-                                  Navigator.of(context).push(
-                                      MaterialPageRoute(builder: (context) => NewProjectPage(title: "Add Project", index: -1,)),
-                                  );
-                                },
-                                child:
-                                const Text(
-                                  "Create New Project",
-                                  style: TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
+                            child: TextButton(
+                              onPressed: (){
+                                _save();
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (context) => NewProjectPage(title: "Add Project", index: -1,)),
+                                );
+                              },
+                              child:
+                              const Text(
+                                "Create New Project",
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
                                 ),
                               ),
                             ),
+
                           ),
                         )
                       ]
@@ -172,10 +172,10 @@ class _ProjectsPage extends State<ProjectsPage> with AfterLayoutMixin<ProjectsPa
                             ModalRoute.withName("Calendar")
                         );
                       },
-                      icon: const Icon(
+                      icon: Icon(
                           Icons.calendar_month,
                           color: Colors.white,
-                          size: 75,
+                          size: queryData.size.width/6,
                           semanticLabel: 'Calendar Page'
                       ),
                     ),
@@ -187,10 +187,10 @@ class _ProjectsPage extends State<ProjectsPage> with AfterLayoutMixin<ProjectsPa
                           _projectWidgetList = _updateProjectWidgetList(data.projectList);
                         });
                       },
-                      icon: const Icon(
+                      icon: Icon(
                           Icons.file_copy,
                           color: Colors.yellow,
-                          size: 75,
+                          size: queryData.size.width/6,
                           semanticLabel: 'Project Page'
                       ),
                     ),
@@ -204,10 +204,10 @@ class _ProjectsPage extends State<ProjectsPage> with AfterLayoutMixin<ProjectsPa
                             ModalRoute.withName("Calendar")
                         );
                       },
-                      icon: const Icon(
+                      icon: Icon(
                           Icons.currency_exchange,
                           color: Colors.white,
-                          size: 75,
+                          size: queryData.size.width/6,
                           semanticLabel: 'Shop Page'
                       ),
                     ),
@@ -221,10 +221,10 @@ class _ProjectsPage extends State<ProjectsPage> with AfterLayoutMixin<ProjectsPa
                             ModalRoute.withName("Calendar")
                         );
                       },
-                      icon: const Icon(
+                      icon: Icon(
                           Icons.settings,
                           color: Colors.white,
-                          size: 75,
+                          size: queryData.size.width/6,
                           semanticLabel: 'Settings Page'
                       ),
                     ),

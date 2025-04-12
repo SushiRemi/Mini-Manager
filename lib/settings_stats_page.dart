@@ -101,6 +101,10 @@ class _SettingsStatsPage extends State<SettingsStatsPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    MediaQueryData queryData;
+    queryData = MediaQuery.of(context);
+
     data.loadAll();
     return Scaffold(
       appBar: AppBar(
@@ -380,10 +384,10 @@ class _SettingsStatsPage extends State<SettingsStatsPage> {
                               ModalRoute.withName("Calendar")
                           );
                         },
-                        icon: const Icon(
+                        icon: Icon(
                             Icons.calendar_month,
                             color: Colors.white,
-                            size: 75,
+                            size: queryData.size.width/6,
                             semanticLabel: 'Calendar Page'
                         ),
                       ),
@@ -396,10 +400,10 @@ class _SettingsStatsPage extends State<SettingsStatsPage> {
                               ModalRoute.withName("Calendar")
                           );
                         },
-                        icon: const Icon(
+                        icon: Icon(
                             Icons.file_copy,
                             color: Colors.white,
-                            size: 75,
+                            size: queryData.size.width/6,
                             semanticLabel: 'Project Page'
                         ),
                       ),
@@ -412,21 +416,21 @@ class _SettingsStatsPage extends State<SettingsStatsPage> {
                               ModalRoute.withName("Calendar")
                           );
                         },
-                        icon: const Icon(
+                        icon: Icon(
                             Icons.currency_exchange,
                             color: Colors.white,
-                            size: 75,
+                            size: queryData.size.width/6,
                             semanticLabel: 'Shop Page'
                         ),
                       ),
 
                       //Settings Page
-                      const IconButton(
+                      IconButton(
                         onPressed: null,
                         icon: Icon(
                             Icons.settings,
                             color: Colors.yellow,
-                            size: 75,
+                            size: queryData.size.width/6,
                             semanticLabel: 'Settings Page'
                         ),
                       ),

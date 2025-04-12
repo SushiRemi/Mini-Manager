@@ -145,6 +145,8 @@ class _CalendarPage extends State<CalendarPage> with AfterLayoutMixin<CalendarPa
   Widget build(BuildContext context) {
     _load(); //loads in data on build
 
+    MediaQueryData queryData;
+    queryData = MediaQuery.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -256,10 +258,10 @@ class _CalendarPage extends State<CalendarPage> with AfterLayoutMixin<CalendarPa
                                   _contentWidgetList = _updateContentWidgetList(_getEventsForDay(DateTime.now()));
                                 });
                               },
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.calendar_month,
                                 color: Colors.yellow,
-                                size: 75,
+                                size: queryData.size.width/6,
                                 semanticLabel: 'Calendar Page'
                               ),
                           ),
@@ -273,10 +275,10 @@ class _CalendarPage extends State<CalendarPage> with AfterLayoutMixin<CalendarPa
                                 ModalRoute.withName("Projects")
                               );
                             },
-                            icon: const Icon(
+                            icon: Icon(
                                 Icons.file_copy,
                                 color: Colors.white,
-                                size: 75,
+                                size: queryData.size.width/6,
                                 semanticLabel: 'Project Page'
                             ),
                           ),
@@ -290,10 +292,10 @@ class _CalendarPage extends State<CalendarPage> with AfterLayoutMixin<CalendarPa
                                 ModalRoute.withName("Shop")
                               );
                             },
-                            icon: const Icon(
+                            icon: Icon(
                                 Icons.currency_exchange,
                                 color: Colors.white,
-                                size: 75,
+                                size: queryData.size.width/6,
                                 semanticLabel: 'Shop Page'
                             ),
                           ),
@@ -307,10 +309,10 @@ class _CalendarPage extends State<CalendarPage> with AfterLayoutMixin<CalendarPa
                                 ModalRoute.withName("SettingsStats")
                               );
                             },
-                            icon: const Icon(
+                            icon: Icon(
                                 Icons.settings,
                                 color: Colors.white,
-                                size: 75,
+                                size: queryData.size.width/6,
                                 semanticLabel: 'Settings Page'
                             ),
                           ),

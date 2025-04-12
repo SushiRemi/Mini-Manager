@@ -134,6 +134,10 @@ class _ShopPage extends State<ShopPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    MediaQueryData queryData;
+    queryData = MediaQuery.of(context);
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -174,28 +178,26 @@ class _ShopPage extends State<ShopPage> {
                       Expanded(
                         child: Container(
                           color: Colors.black12,
-                          child:
-                          Expanded(
-                            child: TextButton(
-                              onPressed: (){
-                                //data.saveAll();
+                          child: TextButton(
+                            onPressed: (){
+                              //data.saveAll();
 
-                                // Change to new item page when ready
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (context) => NewItemPage(title: "Add Item", index: -1,)),
-                                );
-                              },
-                              child:
-                              const Text(
-                                "Create New Item",
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
+                              // Change to new item page when ready
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => NewItemPage(title: "Add Item", index: -1,)),
+                              );
+                            },
+                            child:
+                            const Text(
+                              "Create New Item",
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
                               ),
                             ),
                           ),
+
                         ),
                       )
                     ]
@@ -230,10 +232,10 @@ class _ShopPage extends State<ShopPage> {
                             ModalRoute.withName("Calendar")
                         );
                       },
-                      icon: const Icon(
+                      icon: Icon(
                           Icons.calendar_month,
                           color: Colors.white,
-                          size: 75,
+                          size: queryData.size.width/6,
                           semanticLabel: 'Calendar Page'
                       ),
                     ),
@@ -246,10 +248,10 @@ class _ShopPage extends State<ShopPage> {
                             ModalRoute.withName("Calendar")
                         );
                       },
-                      icon: const Icon(
+                      icon: Icon(
                           Icons.file_copy,
                           color: Colors.white,
-                          size: 75,
+                          size: queryData.size.width/6,
                           semanticLabel: 'Project Page'
                       ),
                     ),
@@ -264,7 +266,7 @@ class _ShopPage extends State<ShopPage> {
                       icon: Icon(
                           Icons.currency_exchange,
                           color: Colors.yellow,
-                          size: 75,
+                          size: queryData.size.width/6,
                           semanticLabel: 'Shop Page'
                       ),
                     ),
@@ -277,10 +279,10 @@ class _ShopPage extends State<ShopPage> {
                             ModalRoute.withName("Calendar")
                         );
                       },
-                      icon: const Icon(
+                      icon: Icon(
                           Icons.settings,
                           color: Colors.white,
-                          size: 75,
+                          size: queryData.size.width/6,
                           semanticLabel: 'Settings Page'
                       ),
                     ),

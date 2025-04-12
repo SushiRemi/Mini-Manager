@@ -167,7 +167,7 @@ class _NewProjectPage extends State<NewProjectPage> {
             ),
             //Title Field
             Container(
-              color: Colors.pinkAccent,
+              color: Colors.blue,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -193,7 +193,7 @@ class _NewProjectPage extends State<NewProjectPage> {
             ),
             //Description Field
             Container(
-                color: Colors.pinkAccent,
+                color: Colors.blue,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
